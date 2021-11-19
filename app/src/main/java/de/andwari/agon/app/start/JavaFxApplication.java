@@ -1,5 +1,6 @@
 package de.andwari.agon.app.start;
 
+import de.andwari.agon.SpringApplication;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;

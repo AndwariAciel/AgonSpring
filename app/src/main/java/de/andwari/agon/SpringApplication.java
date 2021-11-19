@@ -1,13 +1,16 @@
-package de.andwari.agon.app.start;
+package de.andwari.agon;
 
+import de.andwari.agon.app.start.JavaFxApplication;
 import javafx.application.Application;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.spring.SpringFxWeaver;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class SpringApplication {
 
     public static void main(String[] args) {
