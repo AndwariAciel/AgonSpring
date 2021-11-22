@@ -9,6 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Player {
 
+    Long id;
     String name;
     String dci;
     Boolean member;

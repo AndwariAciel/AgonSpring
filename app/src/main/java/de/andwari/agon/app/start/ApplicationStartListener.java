@@ -1,6 +1,6 @@
 package de.andwari.agon.app.start;
 
-import de.andwari.agon.app.start.controller.MainController;
+import de.andwari.agon.app.controller.MainController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
