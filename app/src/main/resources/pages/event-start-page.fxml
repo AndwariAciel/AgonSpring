@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<FlowPane alignment="CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.andwari.agon.app.controller.EventStartPageController">
+    <VBox alignment="CENTER">
+        <Button fx:id="startTournamentBtn" mnemonicParsing="false" text="Button">
+            <VBox.margin>
+                <Insets left="25.0" right="25.0" />
+            </VBox.margin>
+        </Button>
+        <Label text="%event.new.tournament">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+        </Label>
+    </VBox>
+    <VBox alignment="CENTER">
+        <Button fx:id="startEliminationBtn" mnemonicParsing="false" text="Button">
+            <VBox.margin>
+                <Insets left="25.0" right="25.0" />
+            </VBox.margin>
+        </Button>
+        <Label text="%event.new.elimination">
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+        </Label>
+    </VBox>
+</FlowPane>

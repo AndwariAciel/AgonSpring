@@ -5,16 +5,13 @@
 <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
          tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
          fx:controller="de.andwari.agon.app.controller.MainController">
-<tabs>
-        <Tab text="%main.tab.start">
-            <content>
-                <fx:include source="start-page.fxml"/>
-            </content>
-        </Tab>
-        <Tab text="%main.tab.players">
-            <content>
-               <fx:include source="player-page.fxml" />
-            </content>
-        </Tab>
-    </tabs>
+    <Tab text="%main.tab.start">
+        <fx:include source="start-page.fxml"/>
+    </Tab>
+    <Tab text="%main.tab.players">
+        <fx:include source="player-page.fxml"/>
+    </Tab>
+    <Tab text="%main.tab.event">
+        <fx:include source="event-start-page.fxml"/>
+    </Tab>
 </TabPane>

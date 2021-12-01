@@ -23,7 +23,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <java.version>14</java.version>
+        <java.version>13</java.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <lombok.version>1.18.22</lombok.version>
     </properties>

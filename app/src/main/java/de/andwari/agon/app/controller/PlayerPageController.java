@@ -1,42 +1,60 @@
 package de.andwari.agon.app.controller;
 
+import static java.util.Objects.isNull;
+
 import de.andwari.agon.app.item.PlayerItem;
 import de.andwari.agon.app.mapper.PlayerItemMapper;
+import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.exception.PlayerExistsException;
 import de.andwari.agon.model.player.Player;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.isNull;
 
 @Component
+@RequiredArgsConstructor
 @FxmlView("/pages/player-page.fxml")
-public class PlayerPageController {
+public class PlayerPageController implements FxController {
 
-    @Autowired
-    private PlayerService playerService;
-    @Autowired
-    private PlayerItemMapper mapper;
+    private final PlayerService playerService;
+    private final PlayerItemMapper mapper;
 
-    public TextField tfPlayername, tfDciNumber;
+    @FXML
+    public TextField tfPlayername;
+    @FXML
+    public TextField tfDciNumber;
+    @FXML
     public CheckBox cbMember;
+    @FXML
     public Label lbWarning;
+    @FXML
     public TableView<PlayerItem> tvListOfPlayers;
-    private ObservableList<PlayerItem> listOfPlayers;
-    public TableColumn<PlayerItem, String> tcName, tcDci, tcMember;
+    @FXML
+    public TableColumn<PlayerItem, String> tcName;
+    @FXML
+    public TableColumn<PlayerItem, String> tcDci;
+    @FXML
+    public TableColumn<PlayerItem, String> tcMember;
+    @FXML
     public TextField tfSearch;
+    private ObservableList<PlayerItem> listOfPlayers;
 
     @FXML
     public void initialize() {
@@ -47,6 +65,16 @@ public class PlayerPageController {
         FilteredList<PlayerItem> filteredList = new FilteredList<>(sortedList);
         tvListOfPlayers.setItems(filteredList);
 
+        tvListOfPlayers.setRowFactory(tv -> {
+            TableRow<PlayerItem> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 2 && !row.isEmpty()) {
+                    editPlayer(row.getItem());
+                }
+            });
+            return row;
+        });
+
         tcName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         tcDci.setCellValueFactory(cellData -> cellData.getValue().dciProperty());
         tcMember.setCellValueFactory(cellData -> cellData.getValue().memberProperty());
@@ -54,6 +82,15 @@ public class PlayerPageController {
         tfSearch.textProperty().addListener((observable, oldValue, newValue) ->
                 filteredList.setPredicate(p -> filterPlayer(p, newValue))
         );
+    }
+
+    private void editPlayer(PlayerItem item) {
+
+    }
+
+    @Override
+    public void setDataAndInit(Stage stage, DataBundle data) {
+        // Not required
     }
 
     public void addPlayer() {
@@ -72,8 +109,9 @@ public class PlayerPageController {
 
     public void deletePlayer() {
         PlayerItem selectedPlayer = tvListOfPlayers.getSelectionModel().getSelectedItem();
-        if (isNull(selectedPlayer))
+        if (isNull(selectedPlayer)) {
             return;
+        }
         playerService.deletePlayer(selectedPlayer.getId());
         listOfPlayers.remove(selectedPlayer);
     }
