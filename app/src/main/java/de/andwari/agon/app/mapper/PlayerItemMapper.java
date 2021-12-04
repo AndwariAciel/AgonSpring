@@ -8,4 +8,5 @@ import org.mapstruct.Mapper;
 public interface PlayerItemMapper {
 
     PlayerItem toItem(Player player);
+    Player toModel(PlayerItem player);
 }

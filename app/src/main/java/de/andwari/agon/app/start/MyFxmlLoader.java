@@ -19,17 +19,32 @@ public class MyFxmlLoader {
 
     private final FxWeaver fxWeaver;
 
-    public FxController loadNew(Class<? extends FxController> controllerClass) {
-        return load(new Stage(), controllerClass);
+    public FxController loadNewAndWait(Class<? extends FxController> controllerClass, DataBundle data) {
+        Stage stage = new Stage();
+        FxController controller = loadAndInit(stage, controllerClass, data);
+        stage.showAndWait();
+        return controller;
     }
 
-    public FxController load(Stage stage, Class<? extends FxController> controllerClass) {
+    public FxController loadNew(Class<? extends FxController> controllerClass, DataBundle data) {
+        Stage stage = new Stage();
+        FxController controller = loadAndInit(stage, controllerClass, data);
+        stage.show();
+        return controller;
+    }
+
+    public FxController load(Stage stage, Class<? extends FxController> controllerClass, DataBundle data) {
+        FxController controller = loadAndInit(stage, controllerClass, data);
+        stage.show();
+        return controller;
+    }
+
+    private FxController loadAndInit(Stage stage, Class<? extends FxController> controllerClass, DataBundle data) {
         var controllerAndView = fxWeaver.load(controllerClass,
                 ResourceBundle.getBundle("lang.lang", new Locale("DE")));
-        controllerAndView.getController().setDataAndInit(stage, DataBundle.empty());
         var scene = new Scene((Parent) requireNonNull(controllerAndView.getView().orElse(null)));
         stage.setScene(scene);
-        stage.show();
+        controllerAndView.getController().setDataAndInit(stage, data);
         return controllerAndView.getController();
     }
 

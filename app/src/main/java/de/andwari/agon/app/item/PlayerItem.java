@@ -4,9 +4,9 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class PlayerItem {
     private long id;
-    private SimpleStringProperty name;
-    private SimpleStringProperty dci;
-    private SimpleStringProperty member;
+    private final SimpleStringProperty name;
+    private final SimpleStringProperty dci;
+    private final SimpleStringProperty member;
     private boolean isMember;
 
     public PlayerItem() {
@@ -62,5 +62,9 @@ public class PlayerItem {
 
     public Boolean getMember() {
         return isMember;
+    }
+
+    public String getComparableName() {
+        return getName().toLowerCase();
     }
 }

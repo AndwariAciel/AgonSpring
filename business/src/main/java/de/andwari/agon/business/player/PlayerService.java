@@ -25,7 +25,8 @@ public class PlayerService {
     }
 
     public Player addPlayer(@NotNull Player player) throws PlayerExistsException {
-        List<PlayerEntity> existingPlayers = repository.findAllByNameOrDci(player.getName(), player.getDci());
+        List<PlayerEntity> existingPlayers = repository.findAllByNameOrDci(player.getName(), player.getDci()).stream()
+                .filter(p -> !p.getDci().isEmpty()).collect(Collectors.toList());
         if(existingPlayers.isEmpty())
             return mapper.toModel(repository.save(mapper.toEntity(player)));
         else
@@ -34,5 +35,9 @@ public class PlayerService {
 
     public void deletePlayer(long id) {
         repository.deleteById(id);
+    }
+
+    public void updatePlayer(@NotNull Player player) {
+        repository.save(mapper.toEntity(player));
     }
 }

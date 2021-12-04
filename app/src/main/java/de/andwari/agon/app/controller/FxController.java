@@ -5,5 +5,5 @@ import javafx.stage.Stage;
 
 public interface FxController {
 
-    void setDataAndInit(Stage stag, DataBundle data);
+    void setDataAndInit(Stage stage, DataBundle data);
 }
