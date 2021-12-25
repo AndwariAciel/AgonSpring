@@ -4,6 +4,7 @@ import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import java.util.Objects;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,10 +45,14 @@ public class EventStartPageController implements FxController {
     }
 
     private void createNewEvent() {
-
+        loader.loadNew(PlayerSelectionPageController.class, null);
     }
 
     private void notYet() {
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Not yet...");
+        alert.setHeaderText("Not yet implemented. Coming soon...");
+        alert.setContentText(null);
+        alert.showAndWait();
     }
 }

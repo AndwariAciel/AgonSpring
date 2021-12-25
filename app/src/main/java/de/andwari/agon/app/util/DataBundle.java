@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class DataBundle {
 
-    private final Map<String, Data> map;
+    private final Map<String, Object> map;
 
     private DataBundle() {
         map = new HashMap<>();
@@ -16,11 +16,12 @@ public class DataBundle {
         return new DataBundle();
     }
 
-    public void addData(String key, Data data) {
+    public void addData(String key, Object data) {
         map.put(key, data);
     }
 
-    public Optional<Data> getData(String key) {
-        return Optional.ofNullable(map.get(key));
+    public Object getData(String key) {
+        return map.get(key);
     }
+
 }

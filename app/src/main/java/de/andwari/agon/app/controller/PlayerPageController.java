@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -89,7 +90,7 @@ public class PlayerPageController implements FxController {
     private void editPlayer(PlayerItem item) {
         int index = listOfPlayers.indexOf(item);
         DataBundle dataBundle = DataBundle.empty();
-        dataBundle.addData(PlayerEditPageController.PLAYER_KEY, new Data(mapper.toModel(item)));
+        dataBundle.addData(PlayerEditPageController.PLAYER_KEY, mapper.toModel(item));
         PlayerEditPageController controller = (PlayerEditPageController) fxmlLoader.loadNewAndWait(
                 PlayerEditPageController.class, dataBundle);
         listOfPlayers.remove(index);

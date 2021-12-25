@@ -9,9 +9,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @FxmlView("/pages/popups/player-edit.fxml")
 public class PlayerEditPageController implements FxController {
@@ -31,9 +31,7 @@ public class PlayerEditPageController implements FxController {
 
     @Override
     public void setDataAndInit(Stage stage, DataBundle data) {
-        player = (Player) data.getData(PLAYER_KEY).orElseThrow(
-                () -> new IllegalArgumentException("Player must be provided!")
-        ).getValue();
+        player = (Player) data.getData(PLAYER_KEY);
         tfName.setText(player.getName());
         tfDci.setText(player.getDci());
         cbMember.setSelected(player.getMember());

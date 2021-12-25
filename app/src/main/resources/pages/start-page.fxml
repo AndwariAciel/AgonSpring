@@ -3,11 +3,11 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.andwari.agon.app.controller.StartPageController">
-   <center>
-      <ImageView pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../images/banner.jpg" />
-         </image></ImageView>
-   </center>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.andwari.agon.app.controller.StartPageController">
+    <center>
+        <ImageView pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <Image url="@../images/banner.jpg"/>
+        </ImageView>
+    </center>
 </BorderPane>
