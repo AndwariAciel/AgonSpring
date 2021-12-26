@@ -7,16 +7,17 @@ import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.service.ResourceBundleService;
-import de.andwari.agon.model.event.AgonEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @FxmlView("/pages/player-selection.fxml")
 @RequiredArgsConstructor
-public class PlayerSelectionPageController implements FxController, ApplicationListener<PlayerCreatedEvent> {
+public class PlayerSelectionPageController extends FxController implements ApplicationListener<PlayerCreatedEvent> {
 
     @FXML
     private Label lblPlayers;
@@ -50,8 +51,6 @@ public class PlayerSelectionPageController implements FxController, ApplicationL
     private TableColumn<PlayerItem, String> tcSelectPlayer;
     @FXML
     private TableColumn<PlayerItem, String> tcSelectDci;
-    @FXML
-    private Button btnStartEvent;
 
     private final MyFxmlLoader loader;
     private final PlayerService playerService;
@@ -68,7 +67,7 @@ public class PlayerSelectionPageController implements FxController, ApplicationL
     }
 
     @Override
-    public void setDataAndInit(Stage stage, DataBundle data) {
+    public void setDataAndInit(DataBundle data) {
         //not needed
     }
 
@@ -82,7 +81,7 @@ public class PlayerSelectionPageController implements FxController, ApplicationL
                 EventSettingsPageController.CONTROLLER_KEY,
                 this
         );
-        loader.loadNew(EventSettingsPageController.class, bundle);
+        loader.loadNew(this, EventSettingsPageController.class, bundle);
     }
 
     public void startEventManually() {
@@ -156,7 +155,4 @@ public class PlayerSelectionPageController implements FxController, ApplicationL
         lblPlayers.setText(String.format(rbService.getBundle().getString(PLAYER_TEXT_KEY), listOfPlayersInEvent.size()));
     }
 
-    public void continueEvent(AgonEvent event) {
-
-    }
 }

@@ -1,5 +1,6 @@
 package de.andwari.agon.app.controller;
 
+import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.EventService;
 import de.andwari.agon.model.player.Player;
@@ -19,13 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 @FxmlView("/pages/event-settings.fxml")
-public class EventSettingsPageController implements FxController {
+public class EventSettingsPageController extends FxController {
 
     public final static String PLAYERS_KEY = "players.key";
     public final static String CONTROLLER_KEY = "controller.key";
     private List<Player> players;
-    private PlayerSelectionPageController playerSelectionPageController;
 
+    private final MyFxmlLoader loader;
     private final EventService eventService;
 
     @FXML
@@ -50,14 +51,20 @@ public class EventSettingsPageController implements FxController {
                 players,
                 tfEventName.getText(),
                 cbRankpoints.isSelected());
-        playerSelectionPageController.continueEvent(event);
+        loader.load(
+                source.stage,
+                this,
+                EventSeatingsPageController.class,
+                DataBundle.create(
+                        EventSeatingsPageController.EVENT_KEY,
+                        event
+                ));
         ((Stage) lbDate.getScene().getWindow()).close();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void setDataAndInit(Stage stage, DataBundle data) {
+    public void setDataAndInit(DataBundle data) {
         players = (List<Player>) data.getData(PLAYERS_KEY);
-        playerSelectionPageController = (PlayerSelectionPageController) data.getData(CONTROLLER_KEY);
     }
 }

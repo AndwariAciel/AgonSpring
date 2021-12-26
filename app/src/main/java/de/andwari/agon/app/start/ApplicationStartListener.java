@@ -14,6 +14,6 @@ public class ApplicationStartListener implements ApplicationListener<Application
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        loader.load(event.getStage(), MainController.class, DataBundle.empty());
+        loader.load(event.getStage(), null, MainController.class, DataBundle.empty());
     }
 }

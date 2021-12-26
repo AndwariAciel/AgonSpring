@@ -4,7 +4,6 @@ import de.andwari.agon.app.event.PlayerCreatedEvent;
 import de.andwari.agon.app.item.PlayerItem;
 import de.andwari.agon.app.mapper.PlayerItemMapper;
 import de.andwari.agon.app.start.MyFxmlLoader;
-import de.andwari.agon.app.util.Data;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.exception.PlayerExistsException;
@@ -15,12 +14,10 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -32,7 +29,7 @@ import static java.util.Objects.isNull;
 @Component
 @RequiredArgsConstructor
 @FxmlView("/pages/player-page.fxml")
-public class PlayerPageController implements FxController {
+public class PlayerPageController extends FxController {
 
     private final PlayerService playerService;
     private final PlayerItemMapper mapper;
@@ -92,13 +89,13 @@ public class PlayerPageController implements FxController {
         DataBundle dataBundle = DataBundle.empty();
         dataBundle.addData(PlayerEditPageController.PLAYER_KEY, mapper.toModel(item));
         PlayerEditPageController controller = (PlayerEditPageController) fxmlLoader.loadNewAndWait(
-                PlayerEditPageController.class, dataBundle);
+                this, PlayerEditPageController.class, dataBundle);
         listOfPlayers.remove(index);
         listOfPlayers.add(mapper.toItem(controller.getPlayer()));
     }
 
     @Override
-    public void setDataAndInit(Stage stage, DataBundle data) {
+    public void setDataAndInit(DataBundle data) {
         // Not required
     }
 

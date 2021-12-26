@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @FxmlView("/pages/popups/player-edit.fxml")
-public class PlayerEditPageController implements FxController {
+public class PlayerEditPageController extends FxController {
 
     public static final String PLAYER_KEY = "player-key";
 
@@ -30,7 +30,7 @@ public class PlayerEditPageController implements FxController {
     private Player player;
 
     @Override
-    public void setDataAndInit(Stage stage, DataBundle data) {
+    public void setDataAndInit(DataBundle data) {
         player = (Player) data.getData(PLAYER_KEY);
         tfName.setText(player.getName());
         tfDci.setText(player.getDci());

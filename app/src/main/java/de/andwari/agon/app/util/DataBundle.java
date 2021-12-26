@@ -16,6 +16,12 @@ public class DataBundle {
         return new DataBundle();
     }
 
+    public static DataBundle create(String key, Object value) {
+        DataBundle bundle = empty();
+        bundle.addData(key, value);
+        return bundle;
+    }
+
     public void addData(String key, Object data) {
         map.put(key, data);
     }

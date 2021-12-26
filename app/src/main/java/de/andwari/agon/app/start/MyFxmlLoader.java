@@ -22,32 +22,33 @@ public class MyFxmlLoader {
     private final FxWeaver fxWeaver;
     private final ResourceBundleService rbService;
 
-    public FxController loadNewAndWait(Class<? extends FxController> controllerClass, DataBundle data) {
+    public FxController loadNewAndWait(FxController source, Class<? extends FxController> controllerClass, DataBundle data) {
         Stage stage = new Stage();
-        FxController controller = loadAndInit(stage, controllerClass, data);
+        FxController controller = loadAndInit(stage, source, controllerClass, data);
         stage.showAndWait();
         return controller;
     }
 
-    public FxController loadNew(Class<? extends FxController> controllerClass, DataBundle data) {
+    public FxController loadNew(FxController source, Class<? extends FxController> controllerClass, DataBundle data) {
         Stage stage = new Stage();
-        FxController controller = loadAndInit(stage, controllerClass, data);
+        FxController controller = loadAndInit(stage, source, controllerClass, data);
         stage.show();
         return controller;
     }
 
-    public FxController load(Stage stage, Class<? extends FxController> controllerClass, DataBundle data) {
-        FxController controller = loadAndInit(stage, controllerClass, data);
+    public FxController load(Stage stage, FxController source, Class<? extends FxController> controllerClass, DataBundle data) {
+        FxController controller = loadAndInit(stage, source, controllerClass, data);
         stage.show();
         return controller;
     }
 
-    private FxController loadAndInit(Stage stage, Class<? extends FxController> controllerClass, DataBundle data) {
+    private FxController loadAndInit(Stage stage, FxController source, Class<? extends FxController> controllerClass, DataBundle data) {
         var controllerAndView = fxWeaver.load(controllerClass,
                 rbService.getBundle());
         var scene = new Scene((Parent) requireNonNull(controllerAndView.getView().orElse(null)));
         stage.setScene(scene);
-        controllerAndView.getController().setDataAndInit(stage, data);
+        controllerAndView.getController().setStageAndSource(stage, source);
+        controllerAndView.getController().setDataAndInit(data);
         return controllerAndView.getController();
     }
 

@@ -2,20 +2,19 @@ package de.andwari.agon.app.controller;
 
 import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
-import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
-import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class EventStartPageController implements FxController {
+public class EventStartPageController extends FxController {
 
     private final MyFxmlLoader loader;
 
@@ -40,12 +39,12 @@ public class EventStartPageController implements FxController {
     }
 
     @Override
-    public void setDataAndInit(Stage stage, DataBundle data) {
+    public void setDataAndInit(DataBundle data) {
         // No additional data required
     }
 
     private void createNewEvent() {
-        loader.loadNew(PlayerSelectionPageController.class, null);
+        loader.loadNew(this, PlayerSelectionPageController.class, null);
     }
 
     private void notYet() {

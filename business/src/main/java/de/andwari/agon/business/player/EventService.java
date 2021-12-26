@@ -5,6 +5,7 @@ import de.andwari.agon.model.player.Player;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -16,4 +17,8 @@ public class EventService {
                 .build();
     }
 
+    public List<Player> createSeatings(AgonEvent event) {
+         Collections.shuffle(event.getPlayers());
+         return event.getPlayers();
+    }
 }
