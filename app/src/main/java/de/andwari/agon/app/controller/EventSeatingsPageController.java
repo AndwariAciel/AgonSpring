@@ -2,8 +2,9 @@ package de.andwari.agon.app.controller;
 
 import de.andwari.agon.app.item.SeatingsItem;
 import de.andwari.agon.app.mapper.SeatingsMapper;
+import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
-import de.andwari.agon.business.player.EventService;
+import de.andwari.agon.business.service.EventService;
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.player.Player;
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -35,6 +37,7 @@ public class EventSeatingsPageController extends FxController {
 
     private final EventService eventService;
     private final SeatingsMapper mapper;
+    private final MyFxmlLoader loader;
 
     @FXML
     public void initialize() {
@@ -55,5 +58,10 @@ public class EventSeatingsPageController extends FxController {
     }
 
     public void startFirstRound() {
+        eventService.createCrossPairings(
+                seatingsItems.stream().map(mapper::toPlayer).collect(Collectors.toList()),
+                event
+        );
+        loader.load(stage, this, EventPageController.class, DataBundle.create(EventPageController.EVENT_KEY, event));
     }
 }

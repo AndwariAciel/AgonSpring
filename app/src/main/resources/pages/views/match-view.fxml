@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="de.andwari.agon.app.controller.views.MatchViewController">
+    <FlowPane fx:id="fpPlayer1" alignment="CENTER"
+              columnHalignment="CENTER" maxHeight="100.0" maxWidth="200.0"
+              prefHeight="50.0" prefWidth="200.0">
+        <Label fx:id="lbPlayer1" text="Player1">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Label>
+    </FlowPane>
+    <FlowPane fx:id="fpScore1" alignment="CENTER"
+              maxHeight="100.0" prefWidth="50.0">
+        <Label fx:id="lbScore1" text="0">
+            <font>
+                <Font size="36.0"/>
+            </font>
+        </Label>
+    </FlowPane>
+    <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitMatch"
+            text="Submit"/>
+    <FlowPane fx:id="fpScore2" alignment="CENTER"
+              maxHeight="100.0" prefWidth="50.0">
+        <Label fx:id="lbScore2" text="0">
+            <font>
+                <Font size="36.0"/>
+            </font>
+        </Label>
+    </FlowPane>
+    <FlowPane fx:id="fpPlayer2" alignment="CENTER"
+              columnHalignment="CENTER" maxHeight="100.0" maxWidth="200.0"
+              prefHeight="50.0" prefWidth="200.0">
+        <Label fx:id="lbPlayer2" text="Player2">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Label>
+    </FlowPane>
+</HBox>

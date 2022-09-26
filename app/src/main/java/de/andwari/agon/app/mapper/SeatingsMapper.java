@@ -12,4 +12,7 @@ public interface SeatingsMapper {
     @Mapping(target = "name", source = "player.name")
     @Mapping(target = "seatingNumber", source = "seating")
     SeatingsItem toSeating(Player player, String seating);
+
+    @Mapping(target = "id", source = "playerId")
+    Player toPlayer(SeatingsItem seating);
 }

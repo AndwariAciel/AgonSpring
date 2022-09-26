@@ -2,7 +2,7 @@ package de.andwari.agon.app.controller;
 
 import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
-import de.andwari.agon.business.player.EventService;
+import de.andwari.agon.business.service.EventService;
 import de.andwari.agon.model.player.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -59,7 +59,7 @@ public class EventSettingsPageController extends FxController {
                         EventSeatingsPageController.EVENT_KEY,
                         event
                 ));
-        ((Stage) lbDate.getScene().getWindow()).close();
+        stage.close();
     }
 
     @SuppressWarnings("unchecked")
