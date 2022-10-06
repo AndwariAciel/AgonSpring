@@ -10,17 +10,8 @@ import lombok.Data;
 @Builder
 public class Match {
 
+    Long id;
     Player player1;
     Player player2;
-    /*
-    0: 0-0
-    1: 1-0
-    2: 0-1
-    3: 1-1
-    4: 2-0
-    5: 0-2
-    6: 2-1
-    7: 1-2
-     */
-    Integer result;
+    Result result;
 }

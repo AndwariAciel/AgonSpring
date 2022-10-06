@@ -79,7 +79,7 @@
     </bottom>
     <right>
         <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
-            <TableView fx:id="listViewOfRankings" prefHeight="350.0"
+            <TableView fx:id="listViewOfStandings" prefHeight="350.0"
                        prefWidth="350.0">
                 <columns>
                     <TableColumn fx:id="tcStandingRank" prefWidth="30.0"

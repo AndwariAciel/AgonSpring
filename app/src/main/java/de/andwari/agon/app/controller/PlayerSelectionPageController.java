@@ -7,6 +7,7 @@ import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.service.ResourceBundleService;
+import de.andwari.agon.model.event.Standing;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -75,7 +76,12 @@ public class PlayerSelectionPageController extends FxController implements Appli
         DataBundle bundle = DataBundle.empty();
         bundle.addData(
                 EventSettingsPageController.PLAYERS_KEY,
-                listOfPlayersInEvent.stream().map(mapper::toModel).collect(Collectors.toList())
+                listOfPlayersInEvent.stream()
+                        .map(mapper::toModel)
+                        .peek(p -> p.setStanding(
+                                Standing.builder().build()
+                        ))
+                        .collect(Collectors.toList())
         );
         bundle.addData(
                 EventSettingsPageController.CONTROLLER_KEY,

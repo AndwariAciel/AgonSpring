@@ -1,12 +1,7 @@
 package de.andwari.agon.app.start;
 
-import static java.util.Objects.requireNonNull;
-
 import de.andwari.agon.app.controller.FxController;
 import de.andwari.agon.app.util.DataBundle;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import de.andwari.agon.core.service.ResourceBundleService;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +9,8 @@ import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
+
+import static java.util.Objects.requireNonNull;
 
 @Component
 @RequiredArgsConstructor
@@ -39,6 +36,15 @@ public class MyFxmlLoader {
     public FxController load(Stage stage, FxController source, Class<? extends FxController> controllerClass, DataBundle data) {
         FxController controller = loadAndInit(stage, source, controllerClass, data);
         stage.show();
+        return controller;
+    }
+
+    public FxController load(Class<? extends FxController> controllerClass, DataBundle data) {
+        FxController controller = fxWeaver.load(
+                controllerClass,
+                rbService.getBundle()
+        ).getController();
+        controller.setDataAndInit(data);
         return controller;
     }
 

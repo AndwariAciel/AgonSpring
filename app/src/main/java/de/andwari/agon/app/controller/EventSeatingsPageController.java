@@ -44,7 +44,7 @@ public class EventSeatingsPageController extends FxController {
         seatingsItems = FXCollections.observableArrayList();
         tvSeatings.setItems(seatingsItems);
 
-        tcSeat.setCellValueFactory(value -> value.getValue().seatingNumber());
+        tcSeat.setCellValueFactory(cellData -> cellData.getValue().seatingNumber());
         tcPlayer.setCellValueFactory(cellData -> cellData.getValue().name());
     }
 
@@ -59,9 +59,16 @@ public class EventSeatingsPageController extends FxController {
 
     public void startFirstRound() {
         eventService.createCrossPairings(
-                seatingsItems.stream().map(mapper::toPlayer).collect(Collectors.toList()),
+                seatingsItems.stream()
+                        .map(mapper::toPlayer)
+                        .collect(Collectors.toList()),
                 event
         );
-        loader.load(stage, this, EventPageController.class, DataBundle.create(EventPageController.EVENT_KEY, event));
+        loader.load(
+                stage,
+                this,
+                EventPageController.class,
+                DataBundle.create(EventPageController.EVENT_KEY, event)
+        );
     }
 }
