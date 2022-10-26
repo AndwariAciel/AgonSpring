@@ -6,10 +6,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface MatchMapper {
+public interface MatchItemMapper {
 
     @Mapping(target = "matchId", source = "id")
     @Mapping(target = "player1", source = "player1.name")
     @Mapping(target = "player2", source = "player2.name")
+    @Mapping(target = "winsPlayer1", source = "result.p1")
+    @Mapping(target = "winsPlayer2", source = "result.p2")
     MatchItem toMatchItem(Match match);
+
 }

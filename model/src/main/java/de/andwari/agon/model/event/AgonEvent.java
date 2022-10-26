@@ -13,11 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 public class AgonEvent {
 
-    Integer currentRound;
-    LocalDate date;
-    String eventName;
-    List<Player> players;
-    List<Round> rounds;
-    Boolean ranked;
+    private Long id;
+    private Integer currentRound;
+    private LocalDate date;
+    private String eventName;
+    private List<Player> players;
+    private List<Round> rounds;
+    private Boolean ranked;
+    private List<Standing> standings;
 
 }

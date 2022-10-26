@@ -107,9 +107,7 @@ public class TestDataFactory {
                 .dci("DCI-" + name)
                 .name(name)
                 .member(true)
-                .standing(
-                        Standing.builder().build()
-                ).build();
+                .build();
     }
 
     public static List<Match> createMatchesForPlayer1() {

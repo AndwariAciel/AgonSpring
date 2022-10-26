@@ -12,7 +12,7 @@ public class MatchItem {
     private String matchNumber;
     private String player1;
     private String player2;
-    private String winsPlayer1;
-    private String winsPlayer2;
+    private Integer winsPlayer1;
+    private Integer winsPlayer2;
 
 }

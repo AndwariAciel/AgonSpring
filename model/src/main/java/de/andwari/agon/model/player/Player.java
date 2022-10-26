@@ -1,6 +1,5 @@
 package de.andwari.agon.model.player;
 
-import de.andwari.agon.model.event.Standing;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class Player {
 
-    Long id;
-    String name;
-    String dci;
-    Boolean member;
-    Standing standing;
+    private Long id;
+    private String name;
+    private String dci;
+    private Boolean member;
 
 }

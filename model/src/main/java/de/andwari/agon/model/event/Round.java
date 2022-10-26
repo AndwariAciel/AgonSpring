@@ -12,7 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Round {
 
+    Long id;
     List<Match> matches;
     Boolean open;
     Player bye;
+    Long eventId;
 }

@@ -78,9 +78,6 @@ public class PlayerSelectionPageController extends FxController implements Appli
                 EventSettingsPageController.PLAYERS_KEY,
                 listOfPlayersInEvent.stream()
                         .map(mapper::toModel)
-                        .peek(p -> p.setStanding(
-                                Standing.builder().build()
-                        ))
                         .collect(Collectors.toList())
         );
         bundle.addData(

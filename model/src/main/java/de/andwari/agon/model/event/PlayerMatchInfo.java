@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class PlayerMatchInfo {
-    Player player;
-    List<Player> opponents;
-    List<Match> playedMatches;
+    private Player player;
+    private List<Player> opponents;
+    private List<Match> playedMatches;
 }

@@ -1,6 +1,7 @@
 package de.andwari.agon.business.service;
 
 import de.andwari.agon.business.factory.TestDataFactory;
+import de.andwari.agon.model.event.Standing;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,8 @@ class MatchServiceTest {
     ScoreCalculator calculator;
     @Mock
     FinderService finder;
+    @Mock
+    StandingService standingService;
 
     @InjectMocks
     MatchService matchService;
@@ -29,6 +32,7 @@ class MatchServiceTest {
         var event = TestDataFactory.createEvent();
         var matches = TestDataFactory.createMatchesForPlayer1();
         var player = TestDataFactory.getPlayer("player1");
+        var standing = Standing.builder().build();
 
         when(finder.findPlayerMatches(any(), any())).thenReturn(matches);
         when(calculator.matchesWon(any(), any())).thenReturn(5);
@@ -37,14 +41,15 @@ class MatchServiceTest {
         when(calculator.calculateGWP(any(), any())).thenReturn(BigDecimal.valueOf(0.7));
         when(calculator.calculateOppMWP(any(), any(), any())).thenReturn(BigDecimal.valueOf(0.6));
         when(calculator.calculateOppGWP(any(), any(), any())).thenReturn(BigDecimal.valueOf(0.5));
+        when(standingService.findStandingForPlayer(any(), any())).thenReturn(standing);
 
         matchService.updateStandingForPlayer(event, player);
 
-        assertThat(player.getStanding().getScore()).isEqualTo(18);
-        assertThat(player.getStanding().getStandingString()).isEqualTo("5-3-1");
-        assertThat(player.getStanding().getGameWinPercentage()).isEqualTo(BigDecimal.valueOf(0.7));
-        assertThat(player.getStanding().getOpponentGameWinPercentage()).isEqualTo(BigDecimal.valueOf(0.6));
-        assertThat(player.getStanding().getOpponentMatchWinPercentage()).isEqualTo(BigDecimal.valueOf(0.5));
+        assertThat(standing.getScore()).isEqualTo(18);
+        assertThat(standing.getStandingString()).isEqualTo("5-3-1");
+        assertThat(standing.getGameWinPercentage()).isEqualTo(BigDecimal.valueOf(0.7));
+        assertThat(standing.getOpponentGameWinPercentage()).isEqualTo(BigDecimal.valueOf(0.6));
+        assertThat(standing.getOpponentMatchWinPercentage()).isEqualTo(BigDecimal.valueOf(0.5));
     }
 
 }

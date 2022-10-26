@@ -14,4 +14,5 @@ public class Standing {
     private Integer score;
     private BigDecimal opponentGameWinPercentage;
     private String standingString;
+    private Long playerId;
 }

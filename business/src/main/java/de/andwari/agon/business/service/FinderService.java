@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 @Service
 public class FinderService {
 
@@ -19,7 +21,9 @@ public class FinderService {
                 .flatMap(Collection::stream)
                 .filter(match ->
                         match.getPlayer1().equals(player) || match.getPlayer2().equals(player)
-                ).collect(Collectors.toList());
+                )
+                .filter(match -> nonNull(match.getResult()))
+                .collect(Collectors.toList());
     }
 
     public List<Player> findOpponents(List<Match> playedMatches, Player player) {
