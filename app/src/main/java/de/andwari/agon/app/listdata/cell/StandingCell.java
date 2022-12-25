@@ -14,10 +14,10 @@ public class StandingCell extends TableCell<StandingItem, String> {
             return;
         }
         setText(item);
-        StandingItem ranking = getTableRow().getItem();
-        if (ranking != null && ranking.isDropped()) {
+        StandingItem standing = getTableRow().getItem();
+        if (standing != null && standing.isDropped()) {
             setTextFill(Color.GRAY);
-        } else if (ranking != null) {
+        } else if (standing != null) {
             setTextFill(Color.BLACK);
         }
     }

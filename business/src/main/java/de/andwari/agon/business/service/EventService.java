@@ -39,6 +39,8 @@ public class EventService {
                                 .map(p ->
                                         Standing.builder()
                                                 .playerId(p.getId())
+                                                .playerName(p.getName())
+                                                .dropped(false)
                                                 .build())
                                 .collect(Collectors.toList())
                 )

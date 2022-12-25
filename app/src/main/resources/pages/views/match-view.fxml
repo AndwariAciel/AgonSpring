@@ -4,31 +4,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="180.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.andwari.agon.app.controller.views.MatchViewController">
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.andwari.agon.app.controller.views.MatchViewController">
     <FlowPane fx:id="fpClickLeft" alignment="CENTER_RIGHT" minWidth="200.0">
         <Label fx:id="lbPlayer1" text="Player1">
             <font>
-                <Font size="24.0"/>
+                <Font size="24.0" />
             </font>
         </Label>
         <Label fx:id="lbScore1" alignment="CENTER" prefWidth="60.0" text="0">
             <font>
-                <Font size="36.0"/>
+                <Font size="36.0" />
             </font>
         </Label>
     </FlowPane>
-    <Button fx:id="buttonSubmit" minWidth="-Infinity" mnemonicParsing="false" onAction="#submitMatch" text="Submit"/>
+    <Button fx:id="buttonSubmit" minWidth="-Infinity" mnemonicParsing="false" onAction="#submitOrResetMatch" text="Submit" />
     <FlowPane fx:id="fpClickRight" alignment="CENTER_LEFT" minWidth="200.0">
         <Label fx:id="lbScore2" alignment="CENTER" prefWidth="60.0" text="0">
             <font>
-                <Font size="36.0"/>
+                <Font size="36.0" />
             </font>
         </Label>
         <Label fx:id="lbPlayer2" alignment="CENTER" text="Player2">
             <font>
-                <Font size="24.0"/>
+                <Font size="24.0" />
             </font>
         </Label>
     </FlowPane>

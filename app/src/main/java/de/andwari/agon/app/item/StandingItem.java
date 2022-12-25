@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class StandingItem {
 
-    private Long standingId;
+    private Long playerId;
     private SimpleStringProperty rank;
     private SimpleStringProperty player;
 
@@ -74,7 +74,7 @@ public class StandingItem {
         this.gameWinPercentage = new SimpleStringProperty(gameWinPercentage);
     }
 
-    public SimpleStringProperty getMatchWinPercentageProperty() {
+    public SimpleStringProperty getGameWinPercentageProperty() {
         return gameWinPercentage;
     }
 
@@ -114,12 +114,12 @@ public class StandingItem {
         return booster;
     }
 
-    public Long getStandingId() {
-        return standingId;
+    public Long getPlayerId() {
+        return playerId;
     }
 
-    public void setStandingId(Long standingId) {
-        this.standingId = standingId;
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
     }
 
     public String getStandingString() {

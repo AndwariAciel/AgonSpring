@@ -15,4 +15,6 @@ public class Standing {
     private BigDecimal opponentGameWinPercentage;
     private String standingString;
     private Long playerId;
+    private String playerName;
+    private Boolean dropped;
 }

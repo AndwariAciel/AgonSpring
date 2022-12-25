@@ -14,12 +14,12 @@ public class StandingComparator implements Comparator<StandingItem> {
                     if (s1.getOpponentGameWinPercentage().equals(s2.getOpponentGameWinPercentage())) {
                         return - s1.getPlayer().toLowerCase().compareTo(s2.getPlayer().toLowerCase());
                     }
-                    return - s1.getOpponentGameWinPercentage().compareTo(s2.getOpponentGameWinPercentage());
+                    return s1.getOpponentGameWinPercentage().compareTo(s2.getOpponentGameWinPercentage());
                 }
-                return - s1.getGameWinPercentage().compareTo(s2.getGameWinPercentage());
+                return s1.getGameWinPercentage().compareTo(s2.getGameWinPercentage());
             }
-            return - s1.getOpponentMatchWinPercentage().compareTo(s2.getOpponentMatchWinPercentage());
+            return s1.getOpponentMatchWinPercentage().compareTo(s2.getOpponentMatchWinPercentage());
         }
-        return - s1.getScore().compareTo(s2.getScore());
+        return s1.getScore().compareTo(s2.getScore());
     }
 }

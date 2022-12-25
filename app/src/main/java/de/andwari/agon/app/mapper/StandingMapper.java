@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 public interface StandingMapper {
 
     @Mapping(target = "player", source = "playerName")
-    StandingItem toItem(Standing standing, String playerName);
+    StandingItem toItem(Standing standing);
 
 }

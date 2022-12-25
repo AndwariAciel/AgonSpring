@@ -33,7 +33,7 @@ public class MatchService {
         var playedMatches = finderService.findPlayerMatches(event, player);
         var matchesWon = scoreCalculator.matchesWon(playedMatches, player);
         var matchesDraw = scoreCalculator.matchesDraw(playedMatches, player);
-        var standing = standingService.findStandingForPlayer(event, player);
+        var standing = standingService.findStandingForPlayer(event, player.getId());
         standing.setScore(3 * matchesWon + matchesDraw);
         standing.setStandingString(buildStandingString(
                 matchesWon,
@@ -63,12 +63,16 @@ public class MatchService {
         else if (w1 == 1 && w2 == 1)
             return Result.G11;
         else if (w1 == 2 && w2 == 1)
-            return Result.G12;
+            return Result.G21;
         else
             return Result.G12;
     }
 
     public void updateMatch(Match match, Integer winsPlayer1, Integer winsPlayer2) {
         match.setResult(getResult(winsPlayer1, winsPlayer2));
+    }
+
+    public void resetMatch(Match match) {
+        match.setResult(Result.DEFAULT);
     }
 }

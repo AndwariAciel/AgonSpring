@@ -14,11 +14,10 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 import static javafx.scene.input.MouseButton.PRIMARY;
 import static javafx.scene.input.MouseButton.SECONDARY;
-import static javafx.scene.paint.Color.*;
+import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.GREY;
 
 @RequiredArgsConstructor
 @Component
@@ -91,11 +90,16 @@ public class MatchViewController extends FxController {
         return (match.getWinsPlayer1() + match.getWinsPlayer2()) < 3;
     }
 
-    public void submitMatch() {
+    public void submitOrResetMatch() {
         if (match.isFinished()) {
-            //TODO revoke match
+            match.setFinished(false);
+            match.setWinsPlayer1(0);
+            match.setWinsPlayer2(0);
+            updateMatch(match);
+            eventPageController.resetMatch(match);
         } else {
             match.setFinished(true);
+            updateMatch(match);
             eventPageController.finishMatch(match);
         }
     }
@@ -113,10 +117,6 @@ public class MatchViewController extends FxController {
             setColor(BLACK);
             buttonSubmit.setText(rbService.getBundle().getString(SUBMIT_KEY));
         }
-    }
-
-    private String getScore(Integer score) {
-        return Objects.isNull(score) ? "0" : score.toString();
     }
 
     private void setColor(Color color) {

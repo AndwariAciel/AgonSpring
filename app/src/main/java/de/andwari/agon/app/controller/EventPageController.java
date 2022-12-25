@@ -13,19 +13,19 @@ import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.service.EventService;
 import de.andwari.agon.business.service.MatchService;
 import de.andwari.agon.business.service.StandingService;
+import de.andwari.agon.core.service.ResourceBundleService;
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.event.Match;
+import de.andwari.agon.model.event.Standing;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static de.andwari.agon.app.controller.views.MatchViewController.CONTROLLER_KEY;
@@ -37,6 +37,8 @@ import static de.andwari.agon.app.controller.views.MatchViewController.MATCH_KEY
 public class EventPageController extends FxController {
 
     public static final String EVENT_KEY = "event.key";
+    private static final String ROUND_RES_KEY = "event.event.roundheadline";
+
 
     private AgonEvent event;
     private final MyFxmlLoader loader;
@@ -46,6 +48,7 @@ public class EventPageController extends FxController {
     private final MatchService matchService;
     private final StandingService standingService;
     private final MatchViewController matchViewController;
+    private final ResourceBundleService rbService;
 
     public Label lbBye;
     private ObservableList<MatchItem> listOfMatches;
@@ -57,6 +60,8 @@ public class EventPageController extends FxController {
     public TableColumn<StandingItem, String> tcStandingPoints;
     public TableColumn<StandingItem, String> tcStandingPlayer;
     public Label lbRound;
+    public Button btnPrevRound;
+    public Button btnNextRound;
 
     @Override
     public void setDataAndInit(DataBundle data) {
@@ -83,7 +88,7 @@ public class EventPageController extends FxController {
 
         event = (AgonEvent) data.getData(EVENT_KEY);
         //TODO Save Event
-        event.getRounds().get(0).getMatches()
+        event.getRounds().get(event.getCurrentRound()).getMatches()
                 .stream()
                 .map(matchMapper::toMatchItem)
                 .forEach(listOfMatches::add);
@@ -97,19 +102,30 @@ public class EventPageController extends FxController {
         listViewOfMatches.setOnMouseClicked(event ->
                 matchViewController.updateMatch(listViewOfMatches.getSelectionModel().getSelectedItem())
         );
+
+        // Round options
+        lbRound.setText(getRoundText());
+        setVisibilityOfRoundButtons();
+    }
+
+    private void setVisibilityOfRoundButtons() {
+        btnPrevRound.setDisable(event.getCurrentRound() == 0);
+        btnNextRound.setDisable(event.getCurrentRound() >= event.getRounds().size() - 1);
+    }
+
+    private String getRoundText() {
+        String text = rbService.getBundle().getString(ROUND_RES_KEY);
+        return String.format(text, event.getCurrentRound() + 1);
     }
 
     private void updateStandings() {
         listOfStandings.clear();
         listOfStandings.addAll(
-                event.getPlayers().stream()
-                        .map(p -> standingMapper.toItem(
-                                standingService.findStandingForPlayer(event, p),
-                                p.getName())
-                        )
+                event.getStandings()
+                        .stream().map(standingMapper::toItem)
                         .collect(Collectors.toList())
         );
-        listOfStandings.sort(new StandingComparator());
+        listOfStandings.sort(new StandingComparator().reversed());
         for (int i = 1; i <= listOfStandings.size(); i++) {
             listOfStandings.get(i - 1).setRank(Integer.toString(i));
         }
@@ -135,6 +151,13 @@ public class EventPageController extends FxController {
     }
 
     public void showDetails(ActionEvent actionEvent) {
+        loader.loadNewAndWait(
+                this,
+                StandingsPageController.class,
+                DataBundle.create(
+                        StandingsPageController.KEY_STANDINGS,
+                        event.getStandings()
+                ));
     }
 
     public void selectPlayer(ActionEvent actionEvent) {
@@ -144,7 +167,6 @@ public class EventPageController extends FxController {
         listOfMatches.remove(matchItem);
         listOfMatches.add(matchItem);
         listViewOfMatches.getSelectionModel().clearAndSelect(listOfMatches.size() - 1);
-        matchViewController.updateMatch(matchItem);
         var match = matchService.findMatchById(matchItem.getMatchId(), event);
         matchService.updateMatch(match, matchItem.getWinsPlayer1(), matchItem.getWinsPlayer2());
         eventService.updateMatch(event, match);
@@ -153,4 +175,20 @@ public class EventPageController extends FxController {
         updateStandings();
     }
 
+    public void resetMatch(MatchItem matchItem) {
+        listOfMatches.remove(matchItem);
+        listOfMatches.add(matchItem);
+        listViewOfMatches.getSelectionModel().clearAndSelect(listOfMatches.size() - 1);
+        var match = matchService.findMatchById(matchItem.getMatchId(), event);
+        matchService.resetMatch(match);
+        eventService.updateMatch(event, match);
+        matchService.updateStandingForPlayer(event, match.getPlayer1());
+        matchService.updateStandingForPlayer(event, match.getPlayer2());
+        updateStandings();
+    }
+
+    public void dropPlayer(Long playerId) {
+        standingService.findStandingForPlayer(event, playerId).setDropped(true);
+        updateStandings();
+    }
 }

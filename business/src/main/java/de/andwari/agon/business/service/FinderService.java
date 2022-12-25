@@ -2,15 +2,19 @@ package de.andwari.agon.business.service;
 
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.event.Match;
+import de.andwari.agon.model.event.Result;
 import de.andwari.agon.model.event.Round;
 import de.andwari.agon.model.player.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static de.andwari.agon.model.event.Result.*;
 import static java.util.Objects.nonNull;
+import static java.util.function.Predicate.*;
 
 @Service
 public class FinderService {
@@ -19,10 +23,10 @@ public class FinderService {
         return event.getRounds().stream()
                 .map(Round::getMatches)
                 .flatMap(Collection::stream)
+                .filter(not(match -> match.getResult().equals(DEFAULT)))
                 .filter(match ->
                         match.getPlayer1().equals(player) || match.getPlayer2().equals(player)
                 )
-                .filter(match -> nonNull(match.getResult()))
                 .collect(Collectors.toList());
     }
 
