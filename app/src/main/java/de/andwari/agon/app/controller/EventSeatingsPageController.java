@@ -4,6 +4,7 @@ import de.andwari.agon.app.item.SeatingsItem;
 import de.andwari.agon.app.mapper.SeatingsMapper;
 import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
+import de.andwari.agon.business.matcher.SwissMatcher;
 import de.andwari.agon.business.service.EventService;
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.player.Player;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static de.andwari.agon.app.controller.EventPageController.*;
 
 @RequiredArgsConstructor
 @Component
@@ -38,6 +41,7 @@ public class EventSeatingsPageController extends FxController {
     private final EventService eventService;
     private final SeatingsMapper mapper;
     private final MyFxmlLoader loader;
+    private final SwissMatcher matcher;
 
     @FXML
     public void initialize() {
@@ -64,11 +68,15 @@ public class EventSeatingsPageController extends FxController {
                         .collect(Collectors.toList()),
                 event
         );
+        matcher.init(event.getRounds().get(0).getMatches());
+        DataBundle bundle = DataBundle.empty();
+        bundle.addData(EVENT_KEY, event);
+        bundle.addData(EVENT_MATCHER, matcher);
         loader.load(
                 stage,
                 this,
                 EventPageController.class,
-                DataBundle.create(EventPageController.EVENT_KEY, event)
+                bundle
         );
     }
 }

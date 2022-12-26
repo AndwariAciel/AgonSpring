@@ -10,37 +10,43 @@ import de.andwari.agon.app.mapper.MatchItemMapper;
 import de.andwari.agon.app.mapper.StandingMapper;
 import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
+import de.andwari.agon.business.matcher.SwissMatcher;
+import de.andwari.agon.business.matcher.model.MatchPair;
+import de.andwari.agon.business.matcher.model.PointsPair;
 import de.andwari.agon.business.service.EventService;
 import de.andwari.agon.business.service.MatchService;
+import de.andwari.agon.business.service.RoundService;
 import de.andwari.agon.business.service.StandingService;
 import de.andwari.agon.core.service.ResourceBundleService;
 import de.andwari.agon.model.event.AgonEvent;
-import de.andwari.agon.model.event.Match;
-import de.andwari.agon.model.event.Standing;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ResourceBundle;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static de.andwari.agon.app.controller.views.MatchViewController.CONTROLLER_KEY;
 import static de.andwari.agon.app.controller.views.MatchViewController.MATCH_KEY;
 
 @Component
+@Scope("prototype")
 @RequiredArgsConstructor
 @FxmlView("/pages/event.fxml")
 public class EventPageController extends FxController {
 
     public static final String EVENT_KEY = "event.key";
     private static final String ROUND_RES_KEY = "event.event.roundheadline";
+    public static final String EVENT_MATCHER = "event.matcher";
 
 
     private AgonEvent event;
+    private SwissMatcher matcher;
     private final MyFxmlLoader loader;
     private final MatchItemMapper matchMapper;
     private final StandingMapper standingMapper;
@@ -49,6 +55,7 @@ public class EventPageController extends FxController {
     private final StandingService standingService;
     private final MatchViewController matchViewController;
     private final ResourceBundleService rbService;
+    private final RoundService roundService;
 
     public Label lbBye;
     private ObservableList<MatchItem> listOfMatches;
@@ -87,6 +94,7 @@ public class EventPageController extends FxController {
 
 
         event = (AgonEvent) data.getData(EVENT_KEY);
+        matcher = (SwissMatcher) data.getData(EVENT_MATCHER);
         //TODO Save Event
         event.getRounds().get(event.getCurrentRound()).getMatches()
                 .stream()
@@ -110,7 +118,7 @@ public class EventPageController extends FxController {
 
     private void setVisibilityOfRoundButtons() {
         btnPrevRound.setDisable(event.getCurrentRound() == 0);
-        btnNextRound.setDisable(event.getCurrentRound() >= event.getRounds().size() - 1);
+        btnNextRound.setDisable(event.getCurrentRound() > event.getRounds().size() - 1);
     }
 
     private String getRoundText() {
@@ -138,7 +146,27 @@ public class EventPageController extends FxController {
     public void goToNextRound(ActionEvent actionEvent) {
     }
 
-    public void finishRound(ActionEvent actionEvent) {
+    public void finishRound() {
+        matcher.update(listOfStandings.stream()
+                .map(st -> PointsPair.builder()
+                        .player(st.getPlayerId().intValue())
+                        .points(Integer.parseInt(st.getScore())).build())
+                .collect(Collectors.toList()));
+        List<MatchPair> matches = matcher.getMatching();
+        var nextRound = roundService.createNextRound(matches, event);
+        event.getRounds().get(event.getCurrentRound()).setOpen(false);
+        event.getRounds().add(nextRound);
+        event.setCurrentRound(event.getCurrentRound() + 1);
+
+        DataBundle bundle = DataBundle.empty();
+        bundle.addData(EVENT_KEY, event);
+        bundle.addData(EVENT_MATCHER, matcher);
+        loader.load(
+                stage,
+                this,
+                EventPageController.class,
+                bundle
+        );
     }
 
     public void finishEvent(ActionEvent actionEvent) {

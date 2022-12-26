@@ -11,6 +11,10 @@
 
     <artifactId>agon-business</artifactId>
 
+    <properties>
+        <jgrapht.version>1.5.1</jgrapht.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>de.andwari</groupId>
@@ -27,6 +31,17 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>${jgrapht.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-io</artifactId>
+            <version>${jgrapht.version}</version>
+        </dependency>
+
     </dependencies>
 
 

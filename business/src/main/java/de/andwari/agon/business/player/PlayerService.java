@@ -2,7 +2,6 @@ package de.andwari.agon.business.player;
 
 import com.sun.istack.NotNull;
 import de.andwari.agon.business.mapper.PlayerMapper;
-import de.andwari.agon.core.entity.PlayerEntity;
 import de.andwari.agon.core.exception.PlayerExistsException;
 import de.andwari.agon.core.repository.PlayerRepository;
 import de.andwari.agon.model.player.Player;

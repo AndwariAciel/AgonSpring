@@ -2,19 +2,16 @@ package de.andwari.agon.business.service;
 
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.event.Match;
-import de.andwari.agon.model.event.Result;
 import de.andwari.agon.model.event.Round;
 import de.andwari.agon.model.player.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static de.andwari.agon.model.event.Result.*;
-import static java.util.Objects.nonNull;
-import static java.util.function.Predicate.*;
+import static de.andwari.agon.model.event.Result.DEFAULT;
+import static java.util.function.Predicate.not;
 
 @Service
 public class FinderService {
