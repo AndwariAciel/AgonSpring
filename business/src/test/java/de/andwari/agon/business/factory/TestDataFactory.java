@@ -2,10 +2,10 @@ package de.andwari.agon.business.factory;
 
 import de.andwari.agon.business.matcher.model.MatchPair;
 import de.andwari.agon.business.matcher.model.PointsPair;
+import de.andwari.agon.core.entity.PlayerEntity;
 import de.andwari.agon.model.event.*;
 import de.andwari.agon.model.player.Player;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 public class TestDataFactory {
@@ -196,6 +196,19 @@ public class TestDataFactory {
                 MatchPair.builder().player1(4).player2(40).build(),
                 MatchPair.builder().player1(6).player2(60).build(),
                 MatchPair.builder().player1(8).player2(80).build()
+        );
+    }
+
+    public static List<PlayerEntity> createPlayerListWithoutDci() {
+        return Arrays.asList(
+                PlayerEntity.builder().name("Friedrich").dci("").build(),
+                PlayerEntity.builder().name("Hans").dci("").build()
+        );
+    }
+
+    public static List<PlayerEntity> createPlayerListWithDci() {
+        return Arrays.asList(
+                PlayerEntity.builder().name("Hans").dci("123").build()
         );
     }
 }
