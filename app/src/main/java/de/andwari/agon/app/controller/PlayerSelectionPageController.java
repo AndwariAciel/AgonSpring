@@ -7,7 +7,6 @@ import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.service.ResourceBundleService;
-import de.andwari.agon.model.event.Standing;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -25,7 +24,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.*;
 
 @Service
 @FxmlView("/pages/player-selection.fxml")
@@ -151,7 +153,8 @@ public class PlayerSelectionPageController extends FxController implements Appli
 
     @Override
     public void onApplicationEvent(PlayerCreatedEvent event) {
-        listOfPlayers.add(mapper.toItem(event.getPlayer()));
+        if(nonNull(listOfPlayers))
+            listOfPlayers.add(mapper.toItem(event.getPlayer()));
     }
 
     private void updatePlayerSizeLabel() {

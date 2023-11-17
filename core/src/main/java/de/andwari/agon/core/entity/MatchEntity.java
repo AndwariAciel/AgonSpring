@@ -3,7 +3,7 @@ package de.andwari.agon.core.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

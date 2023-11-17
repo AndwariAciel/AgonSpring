@@ -1,6 +1,5 @@
 package de.andwari.agon.business.player;
 
-import com.sun.istack.NotNull;
 import de.andwari.agon.business.mapper.PlayerMapper;
 import de.andwari.agon.core.entity.PlayerEntity;
 import de.andwari.agon.core.exception.PlayerExistsException;
@@ -24,7 +23,7 @@ public class PlayerService {
         return repository.findAll().stream().map(mapper::toModel).collect(Collectors.toList());
     }
 
-    public Player addPlayer(@NotNull Player player) throws PlayerExistsException {
+    public Player addPlayer(Player player) throws PlayerExistsException {
         Optional<PlayerEntity> possiblePlayer = repository.findAllByNameOrDci(player.getName(), player.getDci()).stream()
                 .filter(p -> (!p.getDci().isEmpty() || p.getName().equals(player.getName())))
                 .findAny();
@@ -38,7 +37,7 @@ public class PlayerService {
         repository.deleteById(id);
     }
 
-    public void updatePlayer(@NotNull Player player) {
+    public void updatePlayer(Player player) {
         repository.save(mapper.toEntity(player));
     }
 }

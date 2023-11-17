@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.*;
+
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -45,14 +47,15 @@ public class EventService {
                 .ranked(ranked)
                 .build();
         event.getPlayers().forEach(player -> matchService.updateStandingForPlayer(event, player));
-        EventEntity savedEvent = eventRepository.save(eventMapper.toEntity(event));
-        event.setId(savedEvent.getId());
+        //TODO: Save Event
+//        EventEntity savedEvent = eventRepository.save(eventMapper.toEntity(event));
+//        event.setId(savedEvent.getId());
         return event;
     }
 
     public List<Player> createSeatings(AgonEvent event) {
         var seatings = new ArrayList<>(event.getPlayers());
-        Collections.shuffle(seatings);
+        shuffle(seatings);
         return seatings;
     }
 

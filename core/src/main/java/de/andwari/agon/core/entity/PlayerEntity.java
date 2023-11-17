@@ -2,10 +2,11 @@ package de.andwari.agon.core.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Entity

@@ -1,14 +1,14 @@
 package de.andwari.agon.core.entity;
 
+import de.andwari.agon.core.converter.IdConverter;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
+import static jakarta.persistence.CascadeType.MERGE;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -20,10 +20,10 @@ public class EventEntity extends BaseEntity {
     LocalDate date;
     String eventName;
 
-    @ManyToMany(fetch = EAGER)
-    List<PlayerEntity> players;
+    @Convert(converter = IdConverter.class)
+    List<Long> playerIds;
 
-    @OneToMany(cascade = ALL, orphanRemoval = true)
+    @OneToMany(cascade = MERGE, orphanRemoval = true)
     @JoinColumn(columnDefinition = "EVENT_ID")
     List<RoundEntity> rounds;
     Boolean ranked;
