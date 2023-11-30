@@ -45,7 +45,9 @@ class Matcher {
     private Graph<Integer, DefaultWeightedEdge> addVerticesAndWeights(Map<Integer, List<Integer>> groups,
                                                                              List<MatchPair> playedMatches) {
         var graph =
-                new SimpleWeightedGraph<>(SupplierUtil.createIntegerSupplier(getStart(groups)), SupplierUtil.createDefaultWeightedEdgeSupplier());
+                new SimpleWeightedGraph<>(
+                        SupplierUtil.createIntegerSupplier(getStart(groups)),
+                        SupplierUtil.createDefaultWeightedEdgeSupplier());
 
         groups.values().stream().flatMap(List::stream).forEach(graph::addVertex);
 

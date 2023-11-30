@@ -3,6 +3,7 @@ package de.andwari.agon.business.matcher;
 import de.andwari.agon.business.matcher.mapper.MatchMapper;
 import de.andwari.agon.business.matcher.model.MatchPair;
 import de.andwari.agon.business.matcher.model.PointsPair;
+import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.event.Match;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -88,6 +89,10 @@ public class SwissMatcher {
             var maxGroup = groups.keySet().stream().mapToInt(Integer::intValue).max();
             maxGroup.ifPresent(i -> addPlayerToGroup(i + 1, -1));
         }
+    }
+
+    public void getMatchings(AgonEvent event) {
+
     }
 
 }

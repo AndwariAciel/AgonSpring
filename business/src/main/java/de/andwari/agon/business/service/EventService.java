@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static de.andwari.agon.model.event.Result.*;
 import static java.util.Collections.*;
 
 @Service
@@ -64,41 +65,56 @@ public class EventService {
         Player bye = null;
         var tmpSeatings = new ArrayList<>(seatings);
         if (tmpSeatings.size() % 2 == 1) {
-            bye = tmpSeatings.get(new Random().nextInt(tmpSeatings.size()) - 1);
+            bye = tmpSeatings.get(new Random().nextInt(tmpSeatings.size()));
             tmpSeatings.remove(bye);
         }
         event.setRounds(new ArrayList<>());
-        var round = Round.builder().bye(bye).open(true).matches(new ArrayList<>()).build();
+        var round = Round.builder()
+                .bye(bye)
+                .open(true)
+                .matches(new ArrayList<>())
+                .eventId(event.getId())
+                .build();
         // seatings size is now even.
         var halfSize = (tmpSeatings.size() / 2);
         for (int i = 0; i < halfSize; i++) {
             round.getMatches().add(
                     Match.builder()
+                            .id((long) i)
                             .player1(tmpSeatings.get(i))
                             .player2(tmpSeatings.get(i + halfSize))
-                            .result(Result.DEFAULT)
+                            .result(DEFAULT)
                             .build()
             );
         }
         event.getRounds().add(
                 roundService.saveRound(round, event.getId())
         );
-        eventRepository.save(eventMapper.toEntity(event));
+//        eventRepository.save(eventMapper.toEntity(event));
     }
 
     public void updateMatch(AgonEvent event, Match match) {
-        event.getRounds().stream().map(Round::getMatches).flatMap(Collection::stream)
-                .filter(m -> m.getId().equals(match.getId())).findFirst()
+        event.getRounds().stream()
+                .map(Round::getMatches)
+                .flatMap(Collection::stream)
+                .filter(m -> m.getId().equals(match.getId()))
+                .findFirst()
                 .ifPresent(m -> {
                     m.setResult(match.getResult());
                 });
+        //TODO: Is this necessary? It is done again later but differently
         matchService.updateStandingForPlayer(event, findEventPlayer(event, match.getPlayer1().getId()));
         matchService.updateStandingForPlayer(event, findEventPlayer(event, match.getPlayer2().getId()));
     }
 
     private Player findEventPlayer(AgonEvent event, Long id) {
-        return event.getPlayers().stream().filter(player -> player.getId().equals(id)).findFirst().orElseThrow(
-                () -> new RuntimeException("No Player found")
-        );
+        return event
+                .getPlayers()
+                .stream()
+                .filter(player -> player.getId().equals(id))
+                .findFirst()
+                .orElseThrow(
+                        () -> new RuntimeException("No Player found")
+                );
     }
 }

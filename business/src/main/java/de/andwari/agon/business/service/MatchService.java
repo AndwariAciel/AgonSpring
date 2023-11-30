@@ -29,6 +29,11 @@ public class MatchService {
                 .orElseThrow(() -> new NoSuchElementException("Could not find Match with ID " + id));
     }
 
+    public void updateStandingForPlayers(AgonEvent event, Match match) {
+        updateStandingForPlayer(event, match.getPlayer1());
+        updateStandingForPlayer(event, match.getPlayer2());
+    }
+
     public void updateStandingForPlayer(AgonEvent event, Player player) {
         var playedMatches = finderService.findPlayerMatches(event, player);
         var matchesWon = scoreCalculator.matchesWon(playedMatches, player);
@@ -68,7 +73,7 @@ public class MatchService {
             return Result.G12;
     }
 
-    public void updateMatch(Match match, Integer winsPlayer1, Integer winsPlayer2) {
+    public void updateResult(Match match, Integer winsPlayer1, Integer winsPlayer2) {
         match.setResult(getResult(winsPlayer1, winsPlayer2));
     }
 

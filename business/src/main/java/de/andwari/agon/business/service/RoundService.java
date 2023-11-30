@@ -26,8 +26,10 @@ public class RoundService {
     private final RoundMapper roundMapper;
 
     public Round saveRound(Round round, Long eventId) {
-        return roundMapper.toModel(
-                roundRepository.save(roundMapper.toEntity(round, eventId)));
+        //TODO: database
+//        return roundMapper.toModel(
+//                roundRepository.save(roundMapper.toEntity(round, eventId)));
+        return round;
     }
 
     public int getMaxNumberOfRounds(int numberOfPlayers) {
