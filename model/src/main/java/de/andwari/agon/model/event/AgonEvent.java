@@ -20,6 +20,5 @@ public class AgonEvent {
     private List<Player> players;
     private List<Round> rounds;
     private Boolean ranked;
-    private List<Standing> standings;
 
 }

@@ -16,7 +16,7 @@ class FinderServiceTest {
     @Test
     void testFindMatches() {
         var event = TestDataFactory.createEvent();
-        var player1 = TestDataFactory.getPlayer("player1");
+        var player1 = TestDataFactory.getPlayer(1);
 
         List<Match> playerMatches = finderService.findPlayerMatches(event, player1);
 
@@ -29,7 +29,7 @@ class FinderServiceTest {
     @Test
     void testFindMatchesEmptyList() {
         var event = TestDataFactory.createEvent();
-        var player7 = TestDataFactory.getPlayer("player7");
+        var player7 = TestDataFactory.getPlayer(7);
 
         List<Match> playerMatches = finderService.findPlayerMatches(event, player7);
 
@@ -39,7 +39,7 @@ class FinderServiceTest {
     @Test
     void testFindOpponents() {
         var event = TestDataFactory.createEvent();
-        var player1 = TestDataFactory.getPlayer("player1");
+        var player1 = TestDataFactory.getPlayer(1);
         List<Match> playerMatches = finderService.findPlayerMatches(event, player1);
 
         List<Player> opponents = finderService.findOpponents(playerMatches, player1);
@@ -52,7 +52,7 @@ class FinderServiceTest {
 
     @Test
     void testFindOpponentsEmptyList() {
-        var player7 = TestDataFactory.getPlayer("player7");
+        var player7 = TestDataFactory.getPlayer(7);
 
         List<Player> opponents = finderService.findOpponents(List.of(), player7);
 

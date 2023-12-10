@@ -13,6 +13,7 @@ public interface MatchItemMapper {
     @Mapping(target = "player2", source = "player2.name")
     @Mapping(target = "winsPlayer1", source = "result.p1")
     @Mapping(target = "winsPlayer2", source = "result.p2")
+    @Mapping(target = "match", source = "match")
     MatchItem toMatchItem(Match match);
 
 }

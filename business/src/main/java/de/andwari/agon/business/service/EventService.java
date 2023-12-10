@@ -2,20 +2,24 @@ package de.andwari.agon.business.service;
 
 import de.andwari.agon.business.mapper.EventMapper;
 import de.andwari.agon.business.mapper.MatchMapper;
-import de.andwari.agon.core.entity.EventEntity;
+import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.repository.EventRepository;
 import de.andwari.agon.core.repository.MatchRepository;
-import de.andwari.agon.model.event.*;
+import de.andwari.agon.model.event.AgonEvent;
+import de.andwari.agon.model.event.Match;
+import de.andwari.agon.model.event.Round;
+import de.andwari.agon.model.event.Standing;
 import de.andwari.agon.model.player.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static de.andwari.agon.model.event.Result.*;
-import static java.util.Collections.*;
+import static de.andwari.agon.model.event.Result.DEFAULT;
+import static java.lang.Boolean.FALSE;
+import static java.util.Collections.shuffle;
+import static java.util.Objects.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class EventService {
 
     private final MatchService matchService;
     private final RoundService roundService;
+    private final PlayerService playerService;
     private final MatchRepository matchRepository;
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
@@ -35,23 +40,23 @@ public class EventService {
                 .date(LocalDate.now())
                 .rounds(new ArrayList<>())
                 .players(players)
-                .standings(
-                        players.stream()
-                                .map(p ->
-                                        Standing.builder()
-                                                .playerId(p.getId())
-                                                .playerName(p.getName())
-                                                .dropped(false)
-                                                .build())
-                                .collect(Collectors.toList())
-                )
                 .ranked(ranked)
                 .build();
-        event.getPlayers().forEach(player -> matchService.updateStandingForPlayer(event, player));
+        event.getPlayers().stream()
+                .peek(this::createStandings)
+                .forEach(player -> matchService.updateStandingForPlayer(event, player));
         //TODO: Save Event
 //        EventEntity savedEvent = eventRepository.save(eventMapper.toEntity(event));
 //        event.setId(savedEvent.getId());
         return event;
+    }
+
+    private void createStandings(Player player) {
+        player.setStanding(
+                Standing.builder()
+                        .dropped(FALSE)
+                        .player(player)
+                        .build());
     }
 
     public List<Player> createSeatings(AgonEvent event) {
@@ -62,15 +67,15 @@ public class EventService {
 
     public void createCrossPairings(List<Player> seatings, AgonEvent event) {
         // Check if bye
-        Player bye = null;
+        Player playerWithBye = null;
         var tmpSeatings = new ArrayList<>(seatings);
         if (tmpSeatings.size() % 2 == 1) {
-            bye = tmpSeatings.get(new Random().nextInt(tmpSeatings.size()));
-            tmpSeatings.remove(bye);
+            playerWithBye = tmpSeatings.get(new Random().nextInt(tmpSeatings.size()));
+            tmpSeatings.remove(playerWithBye);
         }
         event.setRounds(new ArrayList<>());
         var round = Round.builder()
-                .bye(bye)
+                .bye(playerWithBye)
                 .open(true)
                 .matches(new ArrayList<>())
                 .eventId(event.getId())
@@ -84,6 +89,18 @@ public class EventService {
                             .player1(tmpSeatings.get(i))
                             .player2(tmpSeatings.get(i + halfSize))
                             .result(DEFAULT)
+                            .byeMatch(false)
+                            .build()
+            );
+        }
+        if (nonNull(playerWithBye)) {
+            round.getMatches().add(
+                    Match.builder()
+                            .id((long) halfSize)
+                            .player1(playerService.getBye())
+                            .player2(playerWithBye)
+                            .result(DEFAULT)
+                            .byeMatch(true)
                             .build()
             );
         }

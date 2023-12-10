@@ -17,7 +17,6 @@ public class MatchService {
 
     private final ScoreCalculator scoreCalculator;
     private final FinderService finderService;
-    private final StandingService standingService;
 
     public Match findMatchById(Long id, AgonEvent event) {
         return event.getRounds()
@@ -38,7 +37,7 @@ public class MatchService {
         var playedMatches = finderService.findPlayerMatches(event, player);
         var matchesWon = scoreCalculator.matchesWon(playedMatches, player);
         var matchesDraw = scoreCalculator.matchesDraw(playedMatches, player);
-        var standing = standingService.findStandingForPlayer(event, player.getId());
+        var standing = player.getStanding();
         standing.setScore(3 * matchesWon + matchesDraw);
         standing.setStandingString(buildStandingString(
                 matchesWon,

@@ -8,7 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface StandingMapper {
 
-    @Mapping(target = "player", source = "playerName")
+    @Mapping(target = "player", source = "player.name")
+    @Mapping(target = "playerId", source = "player.id")
     StandingItem toItem(Standing standing);
 
 }

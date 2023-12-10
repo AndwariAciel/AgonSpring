@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static de.andwari.agon.model.event.Result.DEFAULT;
@@ -33,5 +34,12 @@ public class FinderService {
                 return m.getPlayer2();
             return m.getPlayer1();
         }).collect(Collectors.toList());
+    }
+
+    public Player findPlayerInEventById(AgonEvent event, Long playerId) {
+        return event.getPlayers().stream()
+                .filter(p -> p.getId().equals(playerId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Couldn't find player in event."));
     }
 }

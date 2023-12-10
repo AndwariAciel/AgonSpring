@@ -1,5 +1,6 @@
 package de.andwari.agon.model.event;
 
+import de.andwari.agon.model.player.Player;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,7 +15,6 @@ public class Standing {
     private Integer score;
     private BigDecimal opponentGameWinPercentage;
     private String standingString;
-    private Long playerId;
-    private String playerName;
     private Boolean dropped;
+    private Player player;
 }

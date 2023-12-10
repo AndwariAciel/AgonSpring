@@ -105,17 +105,19 @@ public class MatchViewController extends FxController {
     }
 
     public void updateMatch(MatchItem matchItem) {
-        match = matchItem;
-        lbPlayer1.setText(matchItem.getPlayer1());
-        lbPlayer2.setText(matchItem.getPlayer2());
-        lbScore1.setText(matchItem.getWinsPlayer1().toString());
-        lbScore2.setText(matchItem.getWinsPlayer2().toString());
-        if(matchItem.isFinished()) {
-            setColor(GREY);
-            buttonSubmit.setText(rbService.getBundle().getString(REVOKE_KEY));
-        } else {
-            setColor(BLACK);
-            buttonSubmit.setText(rbService.getBundle().getString(SUBMIT_KEY));
+        if(!matchItem.isByeMatch()) {
+            match = matchItem;
+            lbPlayer1.setText(matchItem.getPlayer1());
+            lbPlayer2.setText(matchItem.getPlayer2());
+            lbScore1.setText(matchItem.getWinsPlayer1().toString());
+            lbScore2.setText(matchItem.getWinsPlayer2().toString());
+            if (matchItem.isFinished()) {
+                setColor(GREY);
+                buttonSubmit.setText(rbService.getBundle().getString(REVOKE_KEY));
+            } else {
+                setColor(BLACK);
+                buttonSubmit.setText(rbService.getBundle().getString(SUBMIT_KEY));
+            }
         }
     }
 

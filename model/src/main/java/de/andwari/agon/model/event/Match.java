@@ -14,4 +14,5 @@ public class Match {
     private Player player1;
     private Player player2;
     private Result result;
+    private boolean byeMatch;
 }

@@ -5,7 +5,6 @@ import de.andwari.agon.app.item.StandingItem;
 import de.andwari.agon.app.listdata.cell.StandingCell;
 import de.andwari.agon.app.mapper.StandingMapper;
 import de.andwari.agon.app.util.DataBundle;
-import de.andwari.agon.business.service.EventService;
 import de.andwari.agon.model.event.Standing;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +16,6 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +25,6 @@ public class StandingsPageController extends FxController {
     public static final String KEY_STANDINGS = "key.standings";
 
     private final StandingMapper standingMapper;
-    private final EventService eventService;
 
     public TableView<StandingItem> tableStandings;
     public TableColumn<StandingItem, String> colRank;
@@ -44,7 +41,7 @@ public class StandingsPageController extends FxController {
         var standings = ((List<Standing>) data.getData(KEY_STANDINGS))
                 .stream().map(standingMapper::toItem)
                 .sorted(new StandingComparator().reversed())
-                .collect(Collectors.toList());
+                .toList();
         for (int i = 1; i <= standings.size(); i++) {
             standings.get(i - 1).setRank(Integer.toString(i));
         }

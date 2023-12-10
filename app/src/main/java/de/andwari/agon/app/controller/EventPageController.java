@@ -11,14 +11,12 @@ import de.andwari.agon.app.mapper.StandingMapper;
 import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.matcher.SwissMatcher;
-import de.andwari.agon.business.matcher.model.MatchPair;
-import de.andwari.agon.business.matcher.model.PointsPair;
 import de.andwari.agon.business.service.EventService;
 import de.andwari.agon.business.service.MatchService;
 import de.andwari.agon.business.service.RoundService;
-import de.andwari.agon.business.service.StandingService;
 import de.andwari.agon.core.service.ResourceBundleService;
 import de.andwari.agon.model.event.AgonEvent;
+import de.andwari.agon.model.player.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,12 +26,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static de.andwari.agon.app.controller.views.MatchViewController.CONTROLLER_KEY;
 import static de.andwari.agon.app.controller.views.MatchViewController.MATCH_KEY;
-import static java.lang.Integer.parseInt;
 
 @Component
 @Scope("prototype")
@@ -43,17 +37,14 @@ public class EventPageController extends FxController {
 
     public static final String EVENT_KEY = "event.key";
     private static final String ROUND_RES_KEY = "event.event.roundheadline";
-    public static final String EVENT_MATCHER = "event.matcher";
-
 
     private AgonEvent event;
-    private SwissMatcher matcher;
+    private final SwissMatcher matcher;
     private final MyFxmlLoader loader;
     private final MatchItemMapper matchMapper;
     private final StandingMapper standingMapper;
     private final EventService eventService;
     private final MatchService matchService;
-    private final StandingService standingService;
     private final MatchViewController matchViewController;
     private final ResourceBundleService rbService;
     private final RoundService roundService;
@@ -95,12 +86,12 @@ public class EventPageController extends FxController {
 
 
         event = (AgonEvent) data.getData(EVENT_KEY);
-        matcher = (SwissMatcher) data.getData(EVENT_MATCHER);
         //TODO Save Event
         event.getRounds().get(event.getCurrentRound()).getMatches()
                 .stream()
                 .map(matchMapper::toMatchItem)
                 .forEach(listOfMatches::add);
+        setByeToFinished();
 
         updateStandings();
 
@@ -118,6 +109,13 @@ public class EventPageController extends FxController {
         setVisibilityOfRoundButtons();
     }
 
+    private void setByeToFinished() {
+        listOfMatches.stream()
+                .filter(MatchItem::isByeMatch)
+                .findFirst()
+                .ifPresent(m -> m.setFinished(true));
+    }
+
     private void setVisibilityOfRoundButtons() {
         btnPrevRound.setDisable(event.getCurrentRound() == 0);
         btnNextRound.setDisable(event.getCurrentRound() >= event.getRounds().size() - 1);
@@ -131,8 +129,9 @@ public class EventPageController extends FxController {
     private void updateStandings() {
         listOfStandings.clear();
         listOfStandings.addAll(
-                event.getStandings()
-                        .stream().map(standingMapper::toItem)
+                event.getPlayers().stream()
+                        .map(Player::getStanding)
+                        .map(standingMapper::toItem)
                         .toList()
         );
         listOfStandings.sort(new StandingComparator().reversed());
@@ -149,13 +148,7 @@ public class EventPageController extends FxController {
     }
 
     public void finishRound() {
-        matcher.update(listOfStandings.stream()
-                .map(st -> PointsPair.builder()
-                        .player(st.getPlayerId().intValue())
-                        .points(parseInt(st.getScore()))
-                        .build())
-                .collect(Collectors.toList()));
-        List<MatchPair> matches = matcher.getMatching();
+        var matches = matcher.getMatchings(event);
         var nextRound = roundService.createNextRound(matches, event);
         event.getRounds().get(event.getCurrentRound()).setOpen(false);
         event.getRounds().add(nextRound);
@@ -163,7 +156,6 @@ public class EventPageController extends FxController {
 
         DataBundle bundle = DataBundle.empty();
         bundle.addData(EVENT_KEY, event);
-        bundle.addData(EVENT_MATCHER, matcher);
         loader.load(
                 stage,
                 this,
@@ -187,7 +179,9 @@ public class EventPageController extends FxController {
                 StandingsPageController.class,
                 DataBundle.create(
                         StandingsPageController.KEY_STANDINGS,
-                        event.getStandings()
+                        event.getPlayers().stream()
+                                .map(Player::getStanding)
+                                .toList()
                 ));
     }
 
@@ -217,7 +211,8 @@ public class EventPageController extends FxController {
     }
 
     public void dropPlayer(Long playerId) {
-        standingService.findStandingForPlayer(event, playerId).setDropped(true);
+        event.getPlayers().stream().filter(p -> p.getId().equals(playerId)).findFirst()
+                .ifPresent(p -> p.getStanding().setDropped(true));
         updateStandings();
     }
 }

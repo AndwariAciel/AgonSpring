@@ -1,7 +1,5 @@
 package de.andwari.agon.business.factory;
 
-import de.andwari.agon.business.matcher.model.MatchPair;
-import de.andwari.agon.business.matcher.model.PointsPair;
 import de.andwari.agon.core.entity.PlayerEntity;
 import de.andwari.agon.model.event.*;
 import de.andwari.agon.model.player.Player;
@@ -17,18 +15,18 @@ public class TestDataFactory {
                                 .open(false)
                                 .matches(List.of(
                                         Match.builder()
-                                                .player1(getPlayer("player1"))
-                                                .player2(getPlayer("player2"))
+                                                .player1(getPlayer(1))
+                                                .player2(getPlayer(2))
                                                 .result(Result.G21)
                                                 .build(),
                                         Match.builder()
-                                                .player1(getPlayer("player3"))
-                                                .player2(getPlayer("player4"))
+                                                .player1(getPlayer(3))
+                                                .player2(getPlayer(4))
                                                 .result(Result.G12)
                                                 .build(),
                                         Match.builder()
-                                                .player1(getPlayer("player5"))
-                                                .player2(getPlayer("player6"))
+                                                .player1(getPlayer(5))
+                                                .player2(getPlayer(6))
                                                 .result(Result.G11)
                                                 .build()
                                 ))
@@ -37,18 +35,18 @@ public class TestDataFactory {
                                 .open(false)
                                 .matches(List.of(
                                         Match.builder()
-                                                .player1(getPlayer("player4"))
-                                                .player2(getPlayer("player1"))
+                                                .player1(getPlayer(4))
+                                                .player2(getPlayer(1))
                                                 .result(Result.G02)
                                                 .build(),
                                         Match.builder()
-                                                .player1(getPlayer("player5"))
-                                                .player2(getPlayer("player3"))
+                                                .player1(getPlayer(5))
+                                                .player2(getPlayer(3))
                                                 .result(Result.G21)
                                                 .build(),
                                         Match.builder()
-                                                .player1(getPlayer("player2"))
-                                                .player2(getPlayer("player6"))
+                                                .player1(getPlayer(2))
+                                                .player2(getPlayer(6))
                                                 .result(Result.G21)
                                                 .build()
                                 ))
@@ -57,30 +55,30 @@ public class TestDataFactory {
                                 .open(false)
                                 .matches(List.of(
                                         Match.builder()
-                                                .player1(getPlayer("player1"))
-                                                .player2(getPlayer("player5"))
+                                                .player1(getPlayer(1))
+                                                .player2(getPlayer(5))
                                                 .result(Result.G02)
                                                 .build(),
                                         Match.builder()
-                                                .player1(getPlayer("player2"))
-                                                .player2(getPlayer("player4"))
+                                                .player1(getPlayer(2))
+                                                .player2(getPlayer(4))
                                                 .result(Result.G21)
                                                 .build(),
                                         Match.builder()
-                                                .player1(getPlayer("player3"))
-                                                .player2(getPlayer("player6"))
+                                                .player1(getPlayer(3))
+                                                .player2(getPlayer(6))
                                                 .result(Result.G12)
                                                 .build()
                                 ))
                                 .build()
                 ))
                 .players(List.of(
-                        getPlayer("player1"),
-                        getPlayer("player2"),
-                        getPlayer("player3"),
-                        getPlayer("player4"),
-                        getPlayer("player5"),
-                        getPlayer("player6")
+                        getPlayer(1),
+                        getPlayer(2),
+                        getPlayer(3),
+                        getPlayer(4),
+                        getPlayer(5),
+                        getPlayer(6)
                 ))
                 .build();
     }
@@ -88,46 +86,48 @@ public class TestDataFactory {
     public static List<Match> createMatchesForPlayer5() {
         return List.of(
                 Match.builder()
-                        .player1(getPlayer("player5"))
-                        .player2(getPlayer("player6"))
+                        .player1(getPlayer(5))
+                        .player2(getPlayer(6))
                         .result(Result.G11)
                         .build(),
                 Match.builder()
-                        .player1(getPlayer("player5"))
-                        .player2(getPlayer("player3"))
+                        .player1(getPlayer(5))
+                        .player2(getPlayer(3))
                         .result(Result.G21)
                         .build(),
                 Match.builder()
-                        .player1(getPlayer("player1"))
-                        .player2(getPlayer("player5"))
+                        .player1(getPlayer(1))
+                        .player2(getPlayer(5))
                         .result(Result.G02)
                         .build()
         );
     }
 
-    public static Player getPlayer(String name) {
+    public static Player getPlayer(long name) {
         return Player.builder()
+                .id(name)
                 .dci("DCI-" + name)
-                .name(name)
+                .name("player" + name)
                 .member(true)
+                .standing(Standing.builder().score(3).build())
                 .build();
     }
 
     public static List<Match> createMatchesForPlayer1() {
         return List.of(
                 Match.builder()
-                        .player1(getPlayer("player1"))
-                        .player2(getPlayer("player2"))
+                        .player1(getPlayer(1))
+                        .player2(getPlayer(2))
                         .result(Result.G21)
                         .build(),
                 Match.builder()
-                        .player1(getPlayer("player4"))
-                        .player2(getPlayer("player1"))
+                        .player1(getPlayer(4))
+                        .player2(getPlayer(1))
                         .result(Result.G02)
                         .build(),
                 Match.builder()
-                        .player1(getPlayer("player1"))
-                        .player2(getPlayer("player5"))
+                        .player1(getPlayer(1))
+                        .player2(getPlayer(5))
                         .result(Result.G02)
                         .build()
         );
@@ -136,66 +136,20 @@ public class TestDataFactory {
     public static List<Match> createMatchesForPlayer3() {
         return List.of(
                 Match.builder()
-                        .player1(getPlayer("player3"))
-                        .player2(getPlayer("player4"))
+                        .player1(getPlayer(3))
+                        .player2(getPlayer(4))
                         .result(Result.G12)
                         .build(),
                 Match.builder()
-                        .player1(getPlayer("player5"))
-                        .player2(getPlayer("player3"))
+                        .player1(getPlayer(5))
+                        .player2(getPlayer(3))
                         .result(Result.G21)
                         .build(),
                 Match.builder()
-                        .player1(getPlayer("player3"))
-                        .player2(getPlayer("player6"))
+                        .player1(getPlayer(3))
+                        .player2(getPlayer(6))
                         .result(Result.G12)
                         .build()
-        );
-    }
-
-    public static List<PointsPair> createPointsAndPlayers() {
-        var points = new ArrayList<PointsPair>();
-        points.add(PointsPair.builder()
-                .points(6)
-                .player(0)
-                .build());
-        points.add(PointsPair.builder()
-                .points(6)
-                .player(3)
-                .build());
-        points.add(PointsPair.builder()
-                .points(4)
-                .player(5)
-                .build());
-        points.add(PointsPair.builder()
-                .points(3)
-                .player(1)
-                .build());
-        points.add(PointsPair.builder()
-                .points(3)
-                .player(2)
-                .build());
-        points.add(PointsPair.builder()
-                .points(0)
-                .player(4)
-                .build());
-        return points;
-    }
-
-    public static Map<Integer, List<Integer>> createGroups() {
-        var map = new TreeMap<Integer, List<Integer>>();
-        map.put(0, Arrays.asList(2,4,6,8, 9));
-        map.put(1, Arrays.asList(20,40,60, 80));
-        map.put(2, List.of(-1));
-        return map;
-    }
-
-    public static List<MatchPair> createPlayedMatches() {
-        return Arrays.asList(
-                MatchPair.builder().player1(2).player2(20).build(),
-                MatchPair.builder().player1(4).player2(40).build(),
-                MatchPair.builder().player1(6).player2(60).build(),
-                MatchPair.builder().player1(8).player2(80).build()
         );
     }
 

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class MatchPair {
-    private Integer player1;
-    private Integer player2;
+    private Long player1;
+    private Long player2;
 }

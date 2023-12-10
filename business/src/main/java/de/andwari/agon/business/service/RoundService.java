@@ -5,7 +5,6 @@ import de.andwari.agon.business.matcher.model.MatchPair;
 import de.andwari.agon.core.repository.RoundRepository;
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.event.Match;
-import de.andwari.agon.model.event.Result;
 import de.andwari.agon.model.event.Round;
 import de.andwari.agon.model.player.Player;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static de.andwari.agon.model.event.Result.*;
-import static java.lang.Math.*;
+import static de.andwari.agon.model.event.Result.DEFAULT;
+import static java.lang.Math.ceil;
+import static java.lang.Math.log;
 
 @RequiredArgsConstructor
 @Service
@@ -49,7 +49,7 @@ public class RoundService {
             round.getMatches().add(Match.builder()
                     .player1(player1)
                     .player2(player2)
-                            .result(DEFAULT)
+                    .result(DEFAULT)
                     .build());
         });
         return round;
@@ -61,7 +61,7 @@ public class RoundService {
                 .findFirst();
         if (byeMatch.isPresent()) {
             matches.remove(byeMatch.get());
-            int bye;
+            long bye;
             if (byeMatch.get().getPlayer1().equals(-1))
                 bye = byeMatch.get().getPlayer2();
             else
@@ -71,9 +71,8 @@ public class RoundService {
         return Optional.empty();
     }
 
-    private Player findPlayer(List<Player> players, Integer player) {
-        Long playerId = Long.valueOf(player);
-        return players.stream().filter(p -> p.getId().equals(playerId)).findFirst().orElseThrow(
+    private Player findPlayer(List<Player> players, Long player) {
+        return players.stream().filter(p -> p.getId().equals(player)).findFirst().orElseThrow(
                 () -> new IllegalStateException("No player found for ID: " + player)
         );
     }

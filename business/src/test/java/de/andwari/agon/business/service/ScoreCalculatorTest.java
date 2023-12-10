@@ -30,7 +30,7 @@ class ScoreCalculatorTest {
     @Test
     void testMatchesWonP1() {
         List<Match> matches = TestDataFactory.createMatchesForPlayer1();
-        var player = TestDataFactory.getPlayer("player1");
+        var player = TestDataFactory.getPlayer(1);
         int matchesWon = scoreCalculator.matchesWon(matches, player);
 
         assertThat(matchesWon).isEqualTo(2);
@@ -39,7 +39,7 @@ class ScoreCalculatorTest {
     @Test
     void testMatchesWonP3() {
         List<Match> matches = TestDataFactory.createMatchesForPlayer3();
-        var player = TestDataFactory.getPlayer("player3");
+        var player = TestDataFactory.getPlayer(3);
         int matchesWon = scoreCalculator.matchesWon(matches, player);
 
         assertThat(matchesWon).isEqualTo(0);
@@ -48,7 +48,7 @@ class ScoreCalculatorTest {
     @Test
     void testMatchesWonP5() {
         List<Match> matches = TestDataFactory.createMatchesForPlayer5();
-        var player = TestDataFactory.getPlayer("player5");
+        var player = TestDataFactory.getPlayer(5);
         int matchesWon = scoreCalculator.matchesWon(matches, player);
 
         assertThat(matchesWon).isEqualTo(2);
@@ -57,7 +57,7 @@ class ScoreCalculatorTest {
     @Test
     void testMatchesDraw() {
         List<Match> matches = TestDataFactory.createMatchesForPlayer5();
-        var player = TestDataFactory.getPlayer("player5");
+        var player = TestDataFactory.getPlayer(5);
         int matchesWon = scoreCalculator.matchesDraw(matches, player);
 
         assertThat(matchesWon).isEqualTo(1);
@@ -66,7 +66,7 @@ class ScoreCalculatorTest {
     @Test
     void testMatchesLost() {
         List<Match> matches = TestDataFactory.createMatchesForPlayer5();
-        var player = TestDataFactory.getPlayer("player5");
+        var player = TestDataFactory.getPlayer(5);
         int matchesWon = scoreCalculator.matchesLost(matches, player);
 
         assertThat(matchesWon).isEqualTo(0);
@@ -76,7 +76,7 @@ class ScoreCalculatorTest {
     void testOppGWP() {
         var event = TestDataFactory.createEvent();
         var matches = TestDataFactory.createMatchesForPlayer5();
-        var player = TestDataFactory.getPlayer("player5");
+        var player = TestDataFactory.getPlayer(5);
 
         Mockito.when(finderService.findOpponents(Mockito.any(), Mockito.any())).thenCallRealMethod();
         Mockito.when(finderService.findPlayerMatches(Mockito.any(), Mockito.any())).thenCallRealMethod();
@@ -90,7 +90,7 @@ class ScoreCalculatorTest {
     void testOppGWPForPlayer1() {
         var event = TestDataFactory.createEvent();
         var matches = TestDataFactory.createMatchesForPlayer1();
-        var player = TestDataFactory.getPlayer("player1");
+        var player = TestDataFactory.getPlayer(1);
 
         Mockito.when(finderService.findOpponents(Mockito.any(), Mockito.any())).thenCallRealMethod();
         Mockito.when(finderService.findPlayerMatches(Mockito.any(), Mockito.any())).thenCallRealMethod();
@@ -103,7 +103,7 @@ class ScoreCalculatorTest {
     @Test
     void testOppGWPWithEmptyList() {
         var event = TestDataFactory.createEvent();
-        var player = TestDataFactory.getPlayer("player1");
+        var player = TestDataFactory.getPlayer(1);
 
         Mockito.when(finderService.findOpponents(Mockito.any(), Mockito.any())).thenCallRealMethod();
 
@@ -113,14 +113,14 @@ class ScoreCalculatorTest {
 
     @Test
     void testMWPWithEmptyList() {
-        BigDecimal mwp = scoreCalculator.calculateGWP(Collections.emptyList(), TestDataFactory.getPlayer("player5"));
+        BigDecimal mwp = scoreCalculator.calculateGWP(Collections.emptyList(), TestDataFactory.getPlayer(5));
         MatcherAssert.assertThat(mwp, is(closeTo(BigDecimal.valueOf(0.333333), BigDecimal.valueOf(0.000001))));
     }
 
     @Test
     void testMWPForPlayer5() {
         var matches = TestDataFactory.createMatchesForPlayer5();
-        var player = TestDataFactory.getPlayer("player5");
+        var player = TestDataFactory.getPlayer(5);
 
         BigDecimal mwp = scoreCalculator.calculateGWP(matches, player);
         MatcherAssert.assertThat(mwp, is(closeTo(BigDecimal.valueOf(0.714285), BigDecimal.valueOf(0.000001))));
@@ -129,7 +129,7 @@ class ScoreCalculatorTest {
     @Test
     void testMWPForPlayer1() {
         var matches = TestDataFactory.createMatchesForPlayer1();
-        var player = TestDataFactory.getPlayer("player1");
+        var player = TestDataFactory.getPlayer(1);
 
         BigDecimal mwp = scoreCalculator.calculateGWP(matches, player);
         MatcherAssert.assertThat(mwp, is(closeTo(BigDecimal.valueOf(0.571428), BigDecimal.valueOf(0.000001))));
@@ -139,7 +139,7 @@ class ScoreCalculatorTest {
     void testOppMWPForPlayer5() {
         var event = TestDataFactory.createEvent();
         var matches = TestDataFactory.createMatchesForPlayer5();
-        var player = TestDataFactory.getPlayer("player5");
+        var player = TestDataFactory.getPlayer(5);
         Mockito.when(finderService.findOpponents(Mockito.any(), Mockito.any())).thenCallRealMethod();
         Mockito.when(finderService.findPlayerMatches(Mockito.any(), Mockito.any())).thenCallRealMethod();
 
@@ -151,7 +151,7 @@ class ScoreCalculatorTest {
     void testOppMWPForPlayer1() {
         var event = TestDataFactory.createEvent();
         var matches = TestDataFactory.createMatchesForPlayer1();
-        var player = TestDataFactory.getPlayer("player1");
+        var player = TestDataFactory.getPlayer(1);
         Mockito.when(finderService.findOpponents(Mockito.any(), Mockito.any())).thenCallRealMethod();
         Mockito.when(finderService.findPlayerMatches(Mockito.any(), Mockito.any())).thenCallRealMethod();
 

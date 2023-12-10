@@ -22,6 +22,7 @@ public class MatchItemController extends FxController {
     private static final String DEFAULT_SCORE = "-";
     private static final String STATUS_PLAYING_KEY = "event.event.status.playing";
     private static final String STATUS_FINISHED_KEY = "event.event.status.finished";
+    private static final String STATUS_FINISHED_BYE = "event.event.status.bye";
 
     public HBox box;
     public Label status;
@@ -39,19 +40,28 @@ public class MatchItemController extends FxController {
     @Override
     public void setDataAndInit(DataBundle data) {
         MatchItem item = (MatchItem) data.getData(MATCH_KEY);
-        setStatus(item.isFinished());
+        setStatus(item);
         player1.setText(item.getPlayer1());
         player2.setText(item.getPlayer2());
         scoreP1.setText(DEFAULT_SCORE);
         scoreP2.setText(DEFAULT_SCORE);
-        if(item.isFinished())
+        if(item.isFinished()) {
+            scoreP1.setText(item.getWinsPlayer1().toString());
+            scoreP2.setText(item.getWinsPlayer2().toString());
             setColor(GREY);
-        else
+        } else {
+            scoreP1.setText(DEFAULT_SCORE);
+            scoreP2.setText(DEFAULT_SCORE);
             setColor(BLACK);
+        }
     }
 
-    private void setStatus(boolean finished) {
-        if(finished)
+    private void setStatus(MatchItem match) {
+        if(match.isByeMatch()) {
+            status.setText(
+                    rbService.getBundle().getString(STATUS_FINISHED_BYE)
+            );
+        } else if(match.isFinished())
             status.setText(
                     rbService.getBundle().getString(STATUS_FINISHED_KEY)
             );

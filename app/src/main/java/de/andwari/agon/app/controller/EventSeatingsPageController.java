@@ -6,6 +6,7 @@ import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.matcher.SwissMatcher;
 import de.andwari.agon.business.service.EventService;
+import de.andwari.agon.business.service.FinderService;
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.player.Player;
 import javafx.collections.FXCollections;
@@ -41,7 +42,7 @@ public class EventSeatingsPageController extends FxController {
     private final EventService eventService;
     private final SeatingsMapper mapper;
     private final MyFxmlLoader loader;
-    private final SwissMatcher matcher;
+    private final FinderService finder;
 
     @FXML
     public void initialize() {
@@ -64,14 +65,12 @@ public class EventSeatingsPageController extends FxController {
     public void startFirstRound() {
         eventService.createCrossPairings(
                 seatingsItems.stream()
-                        .map(mapper::toPlayer)
+                        .map(si -> finder.findPlayerInEventById(event, si.getPlayerId()))
                         .collect(Collectors.toList()),
                 event
         );
-        matcher.init(event.getRounds().get(0).getMatches());
         DataBundle bundle = DataBundle.empty();
         bundle.addData(EVENT_KEY, event);
-        bundle.addData(EVENT_MATCHER, matcher);
         loader.load(
                 stage,
                 this,
