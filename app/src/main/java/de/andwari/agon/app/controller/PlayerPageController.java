@@ -1,5 +1,7 @@
 package de.andwari.agon.app.controller;
 
+import static java.util.Objects.isNull;
+
 import de.andwari.agon.app.event.PlayerCreatedEvent;
 import de.andwari.agon.app.item.PlayerItem;
 import de.andwari.agon.app.mapper.PlayerItemMapper;
@@ -8,22 +10,24 @@ import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.exception.PlayerExistsException;
 import de.andwari.agon.model.player.Player;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-
-import java.util.Comparator;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.isNull;
 
 
 @Component

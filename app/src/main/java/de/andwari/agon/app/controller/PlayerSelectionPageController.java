@@ -1,5 +1,7 @@
 package de.andwari.agon.app.controller;
 
+import static java.util.Objects.nonNull;
+
 import de.andwari.agon.app.event.PlayerCreatedEvent;
 import de.andwari.agon.app.item.PlayerItem;
 import de.andwari.agon.app.mapper.PlayerItemMapper;
@@ -7,6 +9,10 @@ import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.service.ResourceBundleService;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -22,12 +28,6 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.*;
 
 @Service
 @FxmlView("/pages/player-selection.fxml")
@@ -153,12 +153,27 @@ public class PlayerSelectionPageController extends FxController implements Appli
 
     @Override
     public void onApplicationEvent(PlayerCreatedEvent event) {
-        if(nonNull(listOfPlayers))
+        if (nonNull(listOfPlayers)) {
             listOfPlayers.add(mapper.toItem(event.getPlayer()));
+        }
     }
 
     private void updatePlayerSizeLabel() {
         lblPlayers.setText(String.format(rbService.getBundle().getString(PLAYER_TEXT_KEY), listOfPlayersInEvent.size()));
+    }
+
+    @Override
+    public ChangeListener<Number> getHeightListener() {
+        return new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                if(((Double) number.doubleValue()).isNaN())
+                    return;
+                var diff = t1.doubleValue() - number.doubleValue();
+                tvPlayers.setPrefHeight(tvPlayers.getHeight() + diff);
+                tvPlayersInEvent.setPrefHeight(tvPlayersInEvent.getHeight() + diff);
+            }
+        };
     }
 
 }
