@@ -15,5 +15,6 @@ public class Player {
     private String dci;
     private Boolean member;
     private Standing standing;
+    private boolean dropped;
 
 }
