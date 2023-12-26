@@ -1,7 +1,8 @@
 package de.andwari.agon.app.comparator;
 
-import de.andwari.agon.app.item.StandingItem;
+import static java.lang.Integer.parseInt;
 
+import de.andwari.agon.app.item.StandingItem;
 import java.util.Comparator;
 
 public class StandingComparator implements Comparator<StandingItem> {
@@ -12,7 +13,7 @@ public class StandingComparator implements Comparator<StandingItem> {
             if (s1.getOpponentMatchWinPercentage().equals(s2.getOpponentMatchWinPercentage())) {
                 if (s1.getGameWinPercentage().equals(s2.getGameWinPercentage())) {
                     if (s1.getOpponentGameWinPercentage().equals(s2.getOpponentGameWinPercentage())) {
-                        return - s1.getPlayer().toLowerCase().compareTo(s2.getPlayer().toLowerCase());
+                        return -s1.getPlayer().toLowerCase().compareTo(s2.getPlayer().toLowerCase());
                     }
                     return s1.getOpponentGameWinPercentage().compareTo(s2.getOpponentGameWinPercentage());
                 }
@@ -20,6 +21,6 @@ public class StandingComparator implements Comparator<StandingItem> {
             }
             return s1.getOpponentMatchWinPercentage().compareTo(s2.getOpponentMatchWinPercentage());
         }
-        return s1.getScore().compareTo(s2.getScore());
+        return Integer.compare(parseInt(s1.getScore()), parseInt(s2.getScore()));
     }
 }

@@ -79,7 +79,8 @@ public class ScoreCalculator {
 
     private int getMatchResult(Match match, Player player) {
         if (match.getPlayer1().equals(player)) {
-            if (match.getResult() == G10 || match.getResult() == G20 || match.getResult() == G21)
+            if (match.getResult() == G10 || match.getResult() == G20 ||
+                    match.getResult() == G21 || match.getResult() == BYE)
                 return 1;
             else if (match.getResult() == G00 || match.getResult() == G11)
                 return 0;

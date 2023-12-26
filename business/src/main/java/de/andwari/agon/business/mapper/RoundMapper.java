@@ -16,6 +16,6 @@ public interface RoundMapper {
 
     RoundEntity toEntity(Round round);
 
-    Round toModel(RoundEntity entity);
+//    Round toModel(RoundEntity entity);
 
 }

@@ -17,9 +17,9 @@ public class RoundEntity extends BaseEntity {
 
     Long id;
 
-    @OneToMany(cascade = ALL, orphanRemoval = true, fetch = EAGER)
-    @JoinColumn(columnDefinition = "ROUND_ID")
-    List<MatchEntity> matches;
+//    @OneToMany(cascade = ALL, orphanRemoval = true, fetch = EAGER)
+//    @JoinColumn(columnDefinition = "ROUND_ID")
+//    List<MatchEntity> matches;
 
     Boolean open;
 

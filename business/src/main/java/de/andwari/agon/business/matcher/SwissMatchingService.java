@@ -1,8 +1,10 @@
 package de.andwari.agon.business.matcher;
 
+import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.event.Match;
 import de.andwari.agon.model.player.Player;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static de.andwari.agon.business.service.ByeService.BYE_ID;
 import static java.lang.Math.abs;
 
+@RequiredArgsConstructor
 @Service
 public class SwissMatchingService {
+
+    private final PlayerService playerService;
 
     public Map<Pair<Long, Long>, Integer> getSwissMatchings(AgonEvent event) {
         var mapOfPoints = createMapOfPoints(event);
@@ -24,12 +30,8 @@ public class SwissMatchingService {
                 .flatMap(r -> r.getMatches().stream())
                 .map(PlayersPair::new)
                 .toList();
-        var playerIds = new ArrayList<>(event.getPlayers().stream()
-                .map(Player::getId)
-                .toList());
-        if (playerIds.size() % 2 == 1) {
-            playerIds.add(-1L);
-        }
+        var playerIds = playerService.getActivePlayerIds(event);
+
         var pairs = new HashMap<Pair<Long, Long>, Integer>();
         for (int x = 0; x < playerIds.size(); x++) {
             for (int y = x + 1; y < playerIds.size(); y++) {
@@ -54,7 +56,7 @@ public class SwissMatchingService {
                 .collect(Collectors
                         .toMap(Player::getId, p -> p.getStanding().getScore()));
         if (mapOfPlayers.size() % 2 == 1) {
-            mapOfPlayers.put(-1L, 0);
+            mapOfPlayers.put(BYE_ID, 0);
         }
         return mapOfPlayers;
     }

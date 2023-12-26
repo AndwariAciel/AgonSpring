@@ -7,6 +7,7 @@ import de.andwari.agon.core.service.ResourceBundleService;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class MatchItemController extends FxController {
     private static final String STATUS_FINISHED_KEY = "event.event.status.finished";
     private static final String STATUS_FINISHED_BYE = "event.event.status.bye";
 
+    @Getter
     public HBox box;
     public Label status;
     public Label player1;
@@ -33,10 +35,6 @@ public class MatchItemController extends FxController {
 
     private final ResourceBundleService rbService;
 
-    public HBox getBox() {
-        return box;
-    }
-
     @Override
     public void setDataAndInit(DataBundle data) {
         MatchItem item = (MatchItem) data.getData(MATCH_KEY);
@@ -45,14 +43,14 @@ public class MatchItemController extends FxController {
         player2.setText(item.getPlayer2());
         scoreP1.setText(DEFAULT_SCORE);
         scoreP2.setText(DEFAULT_SCORE);
-        if(item.isFinished()) {
+        if(item.isFinished() && !item.isByeMatch()) {
             scoreP1.setText(item.getWinsPlayer1().toString());
             scoreP2.setText(item.getWinsPlayer2().toString());
             setColor(GREY);
         } else {
             scoreP1.setText(DEFAULT_SCORE);
             scoreP2.setText(DEFAULT_SCORE);
-            setColor(BLACK);
+            setColor(item.isByeMatch() ? GREY : BLACK);
         }
     }
 

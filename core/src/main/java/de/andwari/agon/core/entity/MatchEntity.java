@@ -1,5 +1,7 @@
 package de.andwari.agon.core.entity;
 
+import static jakarta.persistence.CascadeType.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,10 +14,8 @@ import jakarta.persistence.*;
 public class MatchEntity extends BaseEntity {
 
     Long id;
-    @ManyToOne
-    PlayerEntity player1;
-    @ManyToOne
-    PlayerEntity player2;
+    Long player1;
+    Long player2;
     @Enumerated(EnumType.STRING)
     Result result;
     Long roundId;

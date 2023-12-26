@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 
+import static de.andwari.agon.model.event.Result.BYE;
 import static de.andwari.agon.model.event.Result.DEFAULT;
 import static java.lang.Boolean.FALSE;
 import static java.util.Collections.shuffle;
@@ -28,6 +29,7 @@ public class EventService {
     private final MatchService matchService;
     private final RoundService roundService;
     private final PlayerService playerService;
+    private final ByeService byeService;
     private final MatchRepository matchRepository;
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
@@ -97,9 +99,9 @@ public class EventService {
             round.getMatches().add(
                     Match.builder()
                             .id((long) halfSize)
-                            .player1(playerService.getBye())
-                            .player2(playerWithBye)
-                            .result(DEFAULT)
+                            .player1(playerWithBye)
+                            .player2(byeService.getBye())
+                            .result(BYE)
                             .byeMatch(true)
                             .build()
             );
@@ -120,8 +122,8 @@ public class EventService {
                     m.setResult(match.getResult());
                 });
         //TODO: Is this necessary? It is done again later but differently
-        matchService.updateStandingForPlayer(event, findEventPlayer(event, match.getPlayer1().getId()));
-        matchService.updateStandingForPlayer(event, findEventPlayer(event, match.getPlayer2().getId()));
+//        matchService.updateStandingForPlayer(event, findEventPlayer(event, match.getPlayer1().getId()));
+//        matchService.updateStandingForPlayer(event, findEventPlayer(event, match.getPlayer2().getId()));
     }
 
     private Player findEventPlayer(AgonEvent event, Long id) {
@@ -131,7 +133,7 @@ public class EventService {
                 .filter(player -> player.getId().equals(id))
                 .findFirst()
                 .orElseThrow(
-                        () -> new RuntimeException("No Player found")
+                        () -> new RuntimeException("No Player found for ID " + id)
                 );
     }
 }

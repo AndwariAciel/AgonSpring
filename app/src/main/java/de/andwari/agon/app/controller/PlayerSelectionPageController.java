@@ -1,5 +1,7 @@
 package de.andwari.agon.app.controller;
 
+import static java.util.Objects.nonNull;
+
 import de.andwari.agon.app.event.PlayerCreatedEvent;
 import de.andwari.agon.app.item.PlayerItem;
 import de.andwari.agon.app.mapper.PlayerItemMapper;
@@ -7,6 +9,8 @@ import de.andwari.agon.app.start.MyFxmlLoader;
 import de.andwari.agon.app.util.DataBundle;
 import de.andwari.agon.business.player.PlayerService;
 import de.andwari.agon.core.service.ResourceBundleService;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -22,12 +26,6 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.*;
 
 @Service
 @FxmlView("/pages/player-selection.fxml")

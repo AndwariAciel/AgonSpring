@@ -1,15 +1,17 @@
 package de.andwari.agon.business.service;
 
+import de.andwari.agon.business.mapper.MatchMapper;
+import de.andwari.agon.core.entity.MatchEntity;
+import de.andwari.agon.core.repository.MatchRepository;
 import de.andwari.agon.model.event.AgonEvent;
 import de.andwari.agon.model.event.Match;
 import de.andwari.agon.model.event.Result;
 import de.andwari.agon.model.event.Round;
 import de.andwari.agon.model.player.Player;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +19,12 @@ public class MatchService {
 
     private final ScoreCalculator scoreCalculator;
     private final FinderService finderService;
+    private final MatchRepository matchRepository;
+    private final MatchMapper matchMapper;
+
+    public MatchEntity saveMatch(Match match) {
+        return matchRepository.save(matchMapper.toEntity(match));
+    }
 
     public Match findMatchById(Long id, AgonEvent event) {
         return event.getRounds()
@@ -54,22 +62,23 @@ public class MatchService {
     }
 
     public Result getResult(Integer w1, Integer w2) {
-        if (w1 == 0 && w2 == 0)
+        if (w1 == 0 && w2 == 0) {
             return Result.G00;
-        else if (w1 == 1 && w2 == 0)
+        } else if (w1 == 1 && w2 == 0) {
             return Result.G10;
-        else if (w1 == 2 && w2 == 0)
+        } else if (w1 == 2 && w2 == 0) {
             return Result.G20;
-        else if (w1 == 0 && w2 == 1)
+        } else if (w1 == 0 && w2 == 1) {
             return Result.G01;
-        else if (w1 == 0 && w2 == 2)
+        } else if (w1 == 0 && w2 == 2) {
             return Result.G02;
-        else if (w1 == 1 && w2 == 1)
+        } else if (w1 == 1 && w2 == 1) {
             return Result.G11;
-        else if (w1 == 2 && w2 == 1)
+        } else if (w1 == 2 && w2 == 1) {
             return Result.G21;
-        else
+        } else {
             return Result.G12;
+        }
     }
 
     public void updateResult(Match match, Integer winsPlayer1, Integer winsPlayer2) {

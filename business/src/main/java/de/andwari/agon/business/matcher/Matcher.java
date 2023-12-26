@@ -1,6 +1,12 @@
 package de.andwari.agon.business.matcher;
 
+import static java.lang.Math.*;
+
 import de.andwari.agon.business.matcher.model.MatchPair;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.matching.blossom.v5.KolmogorovWeightedPerfectMatching;
@@ -8,11 +14,6 @@ import org.jgrapht.alg.matching.blossom.v5.ObjectiveSense;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Service
 class Matcher {
@@ -22,7 +23,7 @@ class Matcher {
         players.forEach(graph::addVertex);
         possiblePairings.forEach((pair, pointDifference) -> {
             graph.addEdge(pair.getLeft(), pair.getRight());
-            graph.setEdgeWeight(pair.getLeft(), pair.getRight(), pointDifference.doubleValue() * 10);
+            graph.setEdgeWeight(pair.getLeft(), pair.getRight(), pow(pointDifference.doubleValue(), 2.));
         });
 
         KolmogorovWeightedPerfectMatching<Long, DefaultWeightedEdge> matching =
