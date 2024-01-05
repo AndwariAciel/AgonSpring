@@ -66,6 +66,7 @@ public class EventPageController extends FxController {
     public Label lbRound;
     public Button btnPrevRound;
     public Button btnNextRound;
+    public Button btnFinishRound;
 
     @Override
     public void setDataAndInit(DataBundle data) {
@@ -206,6 +207,17 @@ public class EventPageController extends FxController {
         eventService.updateMatch(event, match);
         matchService.updateStandingForPlayers(event, match);
         updateStandings();
+        updateFinishRoundButton();
+    }
+
+    private void updateFinishRoundButton() {
+        listOfMatches.stream()
+                .filter(m -> !m.isFinished())
+                .findAny()
+                .ifPresentOrElse(
+                        m -> btnFinishRound.setDisable(true),
+                        () -> btnFinishRound.setDisable(false)
+                );
     }
 
     public void resetMatch(MatchItem matchItem) {
@@ -224,4 +236,5 @@ public class EventPageController extends FxController {
                 .ifPresent(p -> p.getStanding().setDropped(true));
         updateStandings();
     }
+
 }
